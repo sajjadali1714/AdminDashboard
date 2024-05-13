@@ -31,6 +31,8 @@ public partial class SalesdashboardContext : DbContext
 
     public virtual DbSet<Sale> Sales { get; set; }
 
+    public virtual DbSet<VwSalesDetail> VwSalesDetails { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data source=sql.bsite.net\\MSSQL2016;initial catalog=salesdashboard_;User Id=salesdashboard_;Password=Admin1234*;TrustServerCertificate=True;");
@@ -99,8 +101,8 @@ public partial class SalesdashboardContext : DbContext
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
             entity.Property(e => e.Gender).HasMaxLength(255);
             entity.Property(e => e.InvoiceNo).HasMaxLength(255);
+            entity.Property(e => e.OrderTime).HasPrecision(0);
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.Time).HasPrecision(0);
 
             entity.HasOne(d => d.Branch).WithMany(p => p.Sales)
                 .HasForeignKey(d => d.BranchId)
@@ -117,6 +119,37 @@ public partial class SalesdashboardContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.Sales)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK__Sales__ProductID__45F365D3");
+        });
+
+        modelBuilder.Entity<VwSalesDetail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_SalesDetail");
+
+            entity.Property(e => e.Cogs)
+                .HasColumnType("money")
+                .HasColumnName("cogs");
+            entity.Property(e => e.DayName)
+                .HasMaxLength(3)
+                .HasColumnName("day_name");
+            entity.Property(e => e.Gender).HasMaxLength(255);
+            entity.Property(e => e.GrossIncome)
+                .HasColumnType("money")
+                .HasColumnName("gross_income");
+            entity.Property(e => e.GrossMarginper)
+                .HasColumnType("money")
+                .HasColumnName("gross_marginper");
+            entity.Property(e => e.InvoiceNo).HasMaxLength(255);
+            entity.Property(e => e.MonthName)
+                .HasMaxLength(3)
+                .HasColumnName("month_name");
+            entity.Property(e => e.OrderTime).HasPrecision(0);
+            entity.Property(e => e.TimeOfDay)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasColumnName("time_of_day");
+            entity.Property(e => e.TotalSalesAmount).HasColumnType("money");
         });
 
         OnModelCreatingPartial(modelBuilder);

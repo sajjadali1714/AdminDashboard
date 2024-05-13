@@ -23,9 +23,9 @@ public partial class Sale
 
     public double Tax { get; set; }
 
-    public DateOnly Date { get; set; }
+    public DateOnly OrderDate { get; set; }
 
-    public TimeOnly Time { get; set; }
+    public TimeOnly OrderTime { get; set; }
 
     public virtual Branch? Branch { get; set; }
 
@@ -47,7 +47,7 @@ Total Gross Sales (Total Revenue):
 Total Gross Sales=VAT+COGS
 
 Gross Profit (Gross Income):
-Gross Profit=Total Gross Sales−COGS
+Gross Profit= Total Gross Sales − COGS
 
 Gross Margin:
 Gross Margin (%)=( Gross Profit / Total Gross Sales)×100
