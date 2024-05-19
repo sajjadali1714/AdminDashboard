@@ -1,20 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AdminDashboard.Models;
+using AdminDashboard.DBOperations;
 
 namespace AdminDashboard.Controllers;
 
 public class HomeController : Controller
 {
+    Sales sales = null;
+   
     private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger)
     {
+        sales = new Sales();
         _logger = logger;
     }
 
     public IActionResult Index()
     {
+        var result = sales.GetSalesDetail();     
+        ViewBag.SalesDetail = result;
         return View();
     }
 
@@ -23,8 +29,10 @@ public class HomeController : Controller
     return View();
 }
 
-public IActionResult SalesDetail()
+public ActionResult SalesDetail()
 {
+    var result = sales.GetSalesDetail(); 
+    ViewBag.SalesDetail = result;
     return View();
 }
 

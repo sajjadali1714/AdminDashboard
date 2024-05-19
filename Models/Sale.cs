@@ -35,21 +35,3 @@ public partial class Sale
 
     public virtual Product? Product { get; set; }
 }
-
-/*
-1 Cost of Goods Sold (COGS):
-COGS = Unit Price × Quantity
-
-Value Added Tax (VAT):
-VAT=0.05×COGS
-
-Total Gross Sales (Total Revenue):
-Total Gross Sales=VAT+COGS
-
-Gross Profit (Gross Income):
-Gross Profit= Total Gross Sales − COGS
-
-Gross Margin:
-Gross Margin (%)=( Gross Profit / Total Gross Sales)×100
-
-*/

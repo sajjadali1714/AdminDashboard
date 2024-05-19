@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var result = ViewBag.SalesDetail;
 }
 
 <div class="pc-container">
@@ -30,7 +31,7 @@
           <div class="card bg-grd-warning order-card">
             <div class="card-body">
               <h6 class="text-white">Revenue</h6>
-              <h2 class="text-end text-white"><i class="feather icon-repeat float-start"></i><span>$42,562</span></h2>
+              <h2 class="text-end text-white"><i class="feather icon-repeat float-start"></i><span>$ @result</span></h2>
               <p class="m-b-0">This Month<span class="float-end">$5,032</span></p>
             </div>
           </div>
