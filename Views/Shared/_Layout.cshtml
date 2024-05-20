@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AdminDashboard</title>
 
+    
+    
 
     <link rel="icon" href="@Url.Content("~/GradientTemplate/assets/images/favicon.svg")" type="image/x-icon">
     <!-- map-vector css -->
@@ -23,11 +25,14 @@
     <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/fonts/material.css")">
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style.css")" id="main-style-link">
-    <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style-preset.css")">
+    <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style-preset.css")">    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/CustomChart.js"></script>
 </head>
 
 <body data-pc-header="header-1" data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true"
-    data-pc-direction="ltr" data-pc-theme="light">
+    data-pc-direction="ltr" data-pc-theme="light"
+    onload="createChart()">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -38,13 +43,7 @@
 
     <!-- [ Sidebar Menu ] start -->
     <nav class="pc-sidebar">
-        <div class="navbar-wrapper">
-            @* <div class="m-header">
-                <a href="../" class="b-brand text-primary">
-                    <!-- ========   Change your logo from here   ============ -->
-                    <img src="~/GradientTemplate/assets/images/logo-white.svg" alt="logo image" class="logo-lg">                    
-                </a>
-            </div> *@
+        <div class="navbar-wrapper">          
             <div class="navbar-content">
                 <ul class="pc-navbar">                  
                     <li class="pc-item">
@@ -116,107 +115,14 @@
             </a>
         </div>
         <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
-            @* <div class="me-auto pc-mob-drp">
-                <ul class="list-unstyled">
-                    <!-- ======= Menu collapse Icon ===== -->
-                    <li class="pc-h-item pc-sidebar-collapse">
-                        <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
-                            <i class="ph ph-list"></i>
-                        </a>
-                    </li>
-                    <li class="pc-h-item pc-sidebar-popup">
-                        <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
-                            <i class="ph ph-list"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown pc-h-item">
-                        <a class="pc-head-link dropdown-toggle arrow-none m-0" data-bs-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" aria-expanded="false">
-                            <i class="ph ph-magnifying-glass"></i>
-                        </a>
-                        <div class="dropdown-menu pc-h-dropdown drp-search">
-                            <form class="px-3">
-                                <div class="form-group mb-0 d-flex align-items-center">
-                                    <input type="search" class="form-control border-0 shadow-none"
-                                        placeholder="Search here. . .">
-                                    <button class="btn btn-light-secondary btn-search">Search</button>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-                </ul>
-            </div> *@
-            <!-- [Mobile Media Block end] -->
-            @* <div class="ms-auto">
-                <ul class="list-unstyled">
-                    <li class="dropdown pc-h-item header-user-profile">
-                        <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
-                            role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
-                            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
-                        </a>
-                        <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
-                            <div class="dropdown-body">
-                                <div class="profile-notification-scroll position-relative"
-                                    style="max-height: calc(100vh - 225px)">
-                                    <ul class="list-group list-group-flush w-100">
-                                        <li class="list-group-item">
-                                            <a href="https://codedthemes.com/item/gradient-able-admin-template/"
-                                                class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-arrow-circle-down"></i>
-                                                    <span>Download</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a href="#" class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-user-circle"></i>
-                                                    <span>Edit profile</span>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-bell"></i>
-                                                    <span>Notifications</span>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-gear-six"></i>
-                                                    <span>Settings</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a href="#" class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-plus-circle"></i>
-                                                    <span>Add account</span>
-                                                </span>
-                                            </a>
-                                            <a href="#" class="dropdown-item">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ph ph-power"></i>
-                                                    <span>Logout</span>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div> *@
+
         </div>
     </header>
     <!-- [ Header ] end -->
 
 
 
-    <!-- [ Main Content ] start -->
-
+    <!-- [ Main Content ] start -->    
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -241,7 +147,6 @@
     <script src="@Url.Content("~/GradientTemplate/assets/js/pages/dashboard-sales.js")"></script>
     <!-- [Page Specific JS] end -->
     <!-- Required Js -->
-    <script src="@Url.Content("~/GradientTemplateassets/js/plugins/popper.min.js")"></script>
     <script src="@Url.Content("~/GradientTemplate/assets/js/plugins/simplebar.min.js")"></script>
     <script src="@Url.Content("~/GradientTemplate/assets/js/plugins/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/GradientTemplate/assets/js/fonts/custom-font.js")"></script>
@@ -260,6 +165,14 @@
     <script>preset_change("preset-1");</script>
     <script>header_change("header-1");</script>
 
+    <script>
+    window.onload = function() {       
+            createChart('myChart','line','6 Months Sales', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], [12, 19, 3, 5, 2, 3]);
+            createChart('myChart1','bar','Quarterly Revenue', ['Q1', 'Q2','Q3'], [15000, 20000, 30000]);
+            };
+            @* createChart('chart3', 'Monthly Users', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], [300, 400, 200, 500, 450, 600]); *@
+    </script>
+            
 </body>
 <!-- [Body] end -->
 

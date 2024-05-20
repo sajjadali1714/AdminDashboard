@@ -2597,6 +2597,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\Indus\\Projects\\AdminDashboard\\wwwroot\\js\\CustomChart.js",
+      "PackagePath": "staticwebassets\\js\\CustomChart.js"
+    },
+    {
       "Id": "D:\\Indus\\Projects\\AdminDashboard\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

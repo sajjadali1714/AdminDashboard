@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nTKrBc4YWlUq/QzHBxwK95E8tqroElX5ieq/XQXY0is=",
+  "Hash": "tXbYEGri7nKaQhadblpDnAuV/7blEZXFG/DsEc23D+A=",
   "Source": "AdminDashboard",
   "BasePath": "_content/AdminDashboard",
   "Mode": "Default",
@@ -12365,6 +12365,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\GradientTemplate\\README.md"
+    },
+    {
+      "Identity": "D:\\Indus\\Projects\\AdminDashboard\\wwwroot\\js\\CustomChart.js",
+      "SourceId": "AdminDashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Indus\\Projects\\AdminDashboard\\wwwroot\\",
+      "BasePath": "_content/AdminDashboard",
+      "RelativePath": "js/CustomChart.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\CustomChart.js"
     },
     {
       "Identity": "D:\\Indus\\Projects\\AdminDashboard\\wwwroot\\js\\site.js",
