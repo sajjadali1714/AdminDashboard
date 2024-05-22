@@ -1,67 +1,113 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//     function createChart() {
-//       const ctx = document.getElementById('myChart').getContext('2d');
-      
-//       new Chart(ctx, {
-//         type: 'bar',
-//         data: {
-//           labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//           datasets: [{
-//             label: '# of Votes',
-//             data: [12, 19, 3, 5, 2, 3],
-//             borderWidth: 1
-//           }]
-//         },
-//         options: {
-//           scales: {
-//             y: {
-//               beginAtZero: true
-//             }
-//           }
-//         }
-//       });
-//     }
-  
-//     createChart();
-//   });
-// var element = document.getElementById("myChart").addEventListener("onLoad", createChart);
+function createChart(id, type, heading, label, values, responsive) {
+    const ctx = document.getElementById(id);
 
-function createChart(id,type,heading,label,values,responsive){
-const ctx = document.getElementById(id);
-
-  new Chart(ctx, {
-    type: type,
-    data: {
-      labels:  label,
-      datasets: [{
-        label: heading,
-        data: values,
-        borderWidth: 1
-      }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                    display: false,                
-                labels: {
-                    // This more specific font property overrides the global property
-                    font: {
-                        size: 14
+    new Chart(ctx, {
+        type: type,
+        data: {
+            labels: label,
+            datasets: [{
+                label: heading,
+                data: values,
+                borderWidth: 2,
+                font: {
+                    size: 14,
+                    family: "'Poppins', 'monospace','sans-serif'"
+                }
+            }]
+        },
+        options: {
+            responsive: responsive,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        }
                     }
                 }
-            }
-        },
-      scales: {
-        x: {
-            ticks:{
-                display: false
-            } ,
-            display: false
-        },
-        y: {
-            beginAtZero: true
+            },            
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        }
+                    },
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        },
+                        beginAtZero: true
+                    },
+                },
+                },
+                animation:{
+                    duration: 3000
+                  }            
+            
         }
-      }
-    }
-  });
+    });
+}
+
+function createMultiDataChart(id, type, heading, label, values, responsive) {
+    const ctx = document.getElementById(id);
+
+    new Chart(ctx, {
+        type: type,
+        data: {
+            labels: label,
+            datasets: [{
+                label: heading[0],
+                data: values[0],
+                borderWidth: 1,
+            },
+            {
+                label: heading[1],
+                data: values[1],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: responsive,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        }
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            size: 14,
+                            family: "'Poppins', 'monospace', 'sans-serif'"
+                        },
+                        beginAtZero: true
+                    }
+                },                
+            },
+            animation:{
+                duration: 3000
+              }
+        }
+    });
 }

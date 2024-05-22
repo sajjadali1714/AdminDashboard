@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AdminDashboard</title>
 
-    
-    
+
+
 
     <link rel="icon" href="@Url.Content("~/GradientTemplate/assets/images/favicon.svg")" type="image/x-icon">
     <!-- map-vector css -->
@@ -25,14 +25,13 @@
     <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/fonts/material.css")">
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style.css")" id="main-style-link">
-    <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style-preset.css")">    
+    <link rel="stylesheet" href="@Url.Content("~/GradientTemplate/assets/css/style-preset.css")">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/js/CustomChart.js"></script>
 </head>
 
 <body data-pc-header="header-1" data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true"
-    data-pc-direction="ltr" data-pc-theme="light"
-    onload="createChart()">
+    data-pc-direction="ltr" data-pc-theme="light" onload="createChart()">
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
@@ -43,9 +42,9 @@
 
     <!-- [ Sidebar Menu ] start -->
     <nav class="pc-sidebar">
-        <div class="navbar-wrapper">          
+        <div class="navbar-wrapper">
             <div class="navbar-content">
-                <ul class="pc-navbar">                  
+                <ul class="pc-navbar">
                     <li class="pc-item">
                         <a href="../" class="pc-link"><span class="pc-micon">
                                 <i class="ph ph-gauge"></i></span><span class="pc-mtext">Dashboard</span></a>
@@ -110,7 +109,7 @@
     <header class="pc-header">
         <div class="m-header">
             <a href="../" class="b-brand text-primary">
-                <!-- ========   Change your logo from here   ============ -->                  
+                <!-- ========   Change your logo from here   ============ -->
                 <h4 class="text-white">S&S Data Analist</h4>
             </a>
         </div>
@@ -122,7 +121,7 @@
 
 
 
-    <!-- [ Main Content ] start -->    
+    <!-- [ Main Content ] start -->
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -135,7 +134,7 @@
             <div class="row">
                 <div class="col-sm-6 my-1">
                     <p class="m-0">Desing & Develop by Sohail Ahmed & Sajjad Ali</a></p>
-                </div>             
+                </div>
             </div>
         </div>
     </footer>
@@ -165,14 +164,8 @@
     <script>preset_change("preset-1");</script>
     <script>header_change("header-1");</script>
 
-    <script>
-    window.onload = function() {       
-            createChart('myChart','line','6 Months Sales', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], [12, 19, 3, 5, 2, 3]);
-            createChart('myChart1','bar','Quarterly Revenue', ['Q1', 'Q2','Q3'], [15000, 20000, 30000]);
-            };
-            @* createChart('chart3', 'Monthly Users', ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], [300, 400, 200, 500, 450, 600]); *@
-    </script>
-            
+
+
 </body>
 <!-- [Body] end -->
 

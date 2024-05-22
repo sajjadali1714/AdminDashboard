@@ -10,19 +10,73 @@ namespace AdminDashboard.DBOperations
 {
     public class Sales
     {
-        public Int64 GetSalesDetail()
+        public Int64 GetSalesDetail(String column)
         {
             using (var context = new ApplicationDBContext())
             {
-                var Sql = "select COALESCE(sum(TotalSalesAmount),0) as TotalSalesAmount from VW_SalesDetail";
+                string Sql = $@" Select COALESCE(sum({column}), 0) as TotalSalesAmount
+                        from VW_SalesDetail 
+                        where ";
+                //Sql = "select COALESCE(sum(" + column + "),0) as TotalSalesAmount from VW_SalesDetail";
+
                 var result = context.VwSalesDetails
                     .FromSqlRaw(Sql)
                     .Select(v => v.TotalSalesAmount)
-                    .FirstOrDefault();                    
-                    return Convert.ToInt64(result);
+                    .FirstOrDefault();
+                return Convert.ToInt64(result);
+
+
                 //return result.ToString();
             }
         }
+
+        public Int64 GetSalesDetail(String column, String Mon, int year)
+        {
+            using (var context = new ApplicationDBContext())
+            {
+                string Sql = $@" Select COALESCE(sum({column}), 0) as TotalSalesAmount
+                        from VW_SalesDetail";
+                //Sql = "select COALESCE(sum(" + column + "),0) as TotalSalesAmount from VW_SalesDetail";
+
+                var result = context.VwSalesDetails
+                    .FromSqlRaw(Sql)
+                    .Select(v => v.TotalSalesAmount)
+                    .FirstOrDefault();
+                return Convert.ToInt64(result);
+
+
+                //return result.ToString();
+            }
+        }
+
+        public Int64 GetSalesDetail(String column, String FromDate, String ToDate)
+        {
+            using (var context = new ApplicationDBContext())
+            {
+                string Sql = $@" Select COALESCE(sum({column}), 0) as TotalSalesAmount
+                        from VW_SalesDetail";
+                //Sql = "select COALESCE(sum(" + column + "),0) as TotalSalesAmount from VW_SalesDetail";
+
+                var result = context.VwSalesDetails
+                    .FromSqlRaw(Sql)
+                    .Select(v => v.TotalSalesAmount)
+                    .FirstOrDefault();
+                return Convert.ToInt64(result);
+
+
+                //return result.ToString();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         // public List<VwSalesDetail> GetSalesDetail(){
         //     using (var context = new ApplicationDBContext()){
         //         context.VwSalesDetails.FromSql("");

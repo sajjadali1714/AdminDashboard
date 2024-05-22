@@ -19,7 +19,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var result = sales.GetSalesDetail();     
+        var result = sales.GetSalesDetail("TotalSalesAmount");     
         ViewBag.SalesDetail = result;
         return View();
     }
@@ -31,7 +31,7 @@ public class HomeController : Controller
 
 public ActionResult SalesDetail()
 {
-    var result = sales.GetSalesDetail(); 
+    var result = sales.GetSalesDetail("TotalSalesAmount"); 
     ViewBag.SalesDetail = result;
     return View();
 }

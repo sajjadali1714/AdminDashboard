@@ -11,6 +11,14 @@ public partial class VwSalesDetail
 
     public string CustomerTypeName { get; set; } = null!;
 
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? Phone { get; set; }
+
     public string Gender { get; set; } = null!;
 
     public string ProductCategoryName { get; set; } = null!;
@@ -44,4 +52,6 @@ public partial class VwSalesDetail
     public string? DayName { get; set; }
 
     public string? MonthName { get; set; }
+
+    public string? OrderYear { get; set; }
 }
