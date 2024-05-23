@@ -10,8 +10,8 @@ namespace AdminDashboard.Models.ViewModel
         public Int64 totalOrders { get; set; }
         public Int64 monthOrders { get; set; }
         
-        public Int64 totalSales { get; set; }
-        public Int64 monthMonth { get; set; }
+        public Int64 totalProductSales { get; set; }
+        public Int64 monthlyProductSales { get; set; }
 
         public Int64 totalRevenue { get; set; }
         public Int64 monthRevenue { get; set; }

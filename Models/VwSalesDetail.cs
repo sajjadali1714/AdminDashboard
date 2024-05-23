@@ -5,6 +5,7 @@ namespace AdminDashboard.Models;
 
 public partial class VwSalesDetail
 {
+    public int id { get; set; }
     public string InvoiceNo { get; set; } = null!;
 
     public string BranchName { get; set; } = null!;
@@ -27,7 +28,7 @@ public partial class VwSalesDetail
 
     public double UnitPrice { get; set; }
 
-    public int Quantity { get; set; }
+    public Int32 Quantity { get; set; }
 
     public double Tax { get; set; }
 

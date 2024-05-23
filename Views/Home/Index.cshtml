@@ -11,19 +11,19 @@
         <div class="card bg-grd-primary order-card">
           <div class="card-body">
             <h6 class="text-white">Orders Received</h6>
-            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>486</span>
+            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>@result.totalOrders</span>
             </h2>
-            <p class="m-b-0">Completed Orders<span class="float-end">351</span></p>
+            <p class="m-b-0">This Month<span class="float-end">@result.monthOrders</span></p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-success order-card">
           <div class="card-body">
-            <h6 class="text-white">Total Sales</h6>
-            <h2 class="text-end text-white"><i class="feather icon-tag float-start"></i><span>1641</span>
+            <h6 class="text-white">Total Product Sales</h6>
+            <h2 class="text-end text-white"><i class="feather icon-tag float-start"></i><span>@result.totalProductSales</span>
             </h2>
-            <p class="m-b-0">This Month<span class="float-end">213</span></p>
+            <p class="m-b-0">This Month<span class="float-end">@result.monthlyProductSales</span></p>
           </div>
         </div>
       </div>
@@ -31,8 +31,8 @@
         <div class="card bg-grd-warning order-card">
           <div class="card-body">
             <h6 class="text-white">Revenue</h6>
-            <h2 class="text-end text-white"><i class="feather icon-repeat float-start"></i><span>$ @result</span></h2>
-            <p class="m-b-0">This Month<span class="float-end">$5,032</span></p>
+            <h2 class="text-end text-white"><i class="feather icon-repeat float-start"></i><span>$ @result.totalRevenue</span></h2>
+            <p class="m-b-0">This Month<span class="float-end">$ @result.monthRevenue</span></p>
           </div>
         </div>
       </div>

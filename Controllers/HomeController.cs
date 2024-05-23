@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using AdminDashboard.Models;
 using AdminDashboard.DBOperations;
+using AdminDashboard.Models.ViewModel;
 
 namespace AdminDashboard.Controllers;
 
@@ -19,8 +20,15 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var result = sales.GetSalesDetail("TotalSalesAmount");     
-        ViewBag.SalesDetail = result;
+        var salesViewModel = new salesViewModel(){
+            totalOrders = sales.GetSalesDetail("id"),
+            monthOrders = sales.GetMonthSalesDetail("id","'" + DateTime.Now.ToString("MMM") + "'",2024),
+            totalProductSales = sales.GetSalesDetail("Quantity"),
+            monthlyProductSales = sales.GetMonthSalesDetail("Quantity","'" + DateTime.Now.ToString("MMM") + "'",2024),
+            totalRevenue = sales.GetSalesDetail("TotalSalesAmount"),
+            monthRevenue = sales.GetMonthSalesDetail("TotalSalesAmount","'" + DateTime.Now.ToString("MMM") + "'",2024),
+        };
+        ViewBag.SalesDetail = salesViewModel;
         return View();
     }
 
