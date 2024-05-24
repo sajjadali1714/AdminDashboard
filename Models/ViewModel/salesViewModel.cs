@@ -19,31 +19,31 @@ namespace AdminDashboard.Models.ViewModel
         public Int64 totalProfit { get; set; }
         public Int64 monthProfit{ get; set; }
 
-        public Int64[]? SixMonthSales { get; set; }
-        public Int64[]? pastSixMonthSales{ get; set; }
-        public Int64[]? branchSales{ get; set; }
+        public decimal[]? FiveMonthSales { get; set; }
+        public decimal[]? pastFiveMonthSales{ get; set; }
+        public decimal[]? branchSales{ get; set; }
 
         public Int64 dailySales { get; set; }
         public Int64 monthSales { get; set; }
         public Int64 yearSales { get; set; }
-        public List<TopCustomers>? TopCustomer { get; set; }
+        public List<BranchSales>? BranchSales { get; set; }
 
 
         public salesViewModel()
         {
-            TopCustomer = new List<TopCustomers>();
+            BranchSales = new List<BranchSales>();
         }
 
     }
 
-    public class TopCustomers
+    public class BranchSales
     {
-        public string? FirstName { get; set; }
-        public string? LastNamme { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public Int64? Qty { get; set; }
-        public Int64? Amount { get; set; }
+        public string? orderMonth { get; set; }
+        public string? BranchName { get; set; }
+        public Int64? totalSale { get; set; }
+        public Int64? maxSale { get; set; }
+        public Int64? minSale { get; set; }
+        public Int64? avgSale { get; set; }
     }
 }
 

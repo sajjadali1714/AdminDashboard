@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using AdminDashboard.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminDashboard.Data;
+namespace AdminDashboard.Models;
 
 public partial class ApplicationDBContext : DbContext
 {
@@ -128,34 +127,27 @@ public partial class ApplicationDBContext : DbContext
                 .HasNoKey()
                 .ToView("VW_SalesDetail");
 
-            entity.Property(e => e.Cogs).HasColumnType("money");
+            entity.Property(e => e.Cogs)
+                .HasColumnType("money")
+                .HasColumnName("Cogs");
             entity.Property(e => e.DayName)
                 .HasMaxLength(3)
                 .HasColumnName("day_name");
-            entity.Property(e => e.Email)
-                .HasMaxLength(100)
-                .HasColumnName("email");
-            entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.Gender).HasMaxLength(255);
-            entity.Property(e => e.GrossIncome).HasColumnType("money");
+            entity.Property(e => e.GrossIncome)
+                .HasColumnType("money")
+                .HasColumnName("GrossIncome");
+            // entity.Property(e => e.GrossIncome)
+            //     .HasColumnType("money")
+            //     .HasColumnName("gross_income");
             entity.Property(e => e.GrossMarginper)
                 .HasColumnType("money")
                 .HasColumnName("gross_marginper");
-            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.InvoiceNo).HasMaxLength(255);
-            entity.Property(e => e.LastName)
-                .HasMaxLength(50)
-                .HasColumnName("lastName");
             entity.Property(e => e.MonthName)
                 .HasMaxLength(3)
                 .HasColumnName("month_name");
             entity.Property(e => e.OrderTime).HasPrecision(0);
-            entity.Property(e => e.OrderYear)
-                .HasMaxLength(30)
-                .HasColumnName("order_year");
-            entity.Property(e => e.Phone)
-                .HasMaxLength(20)
-                .HasColumnName("phone");
             entity.Property(e => e.TimeOfDay)
                 .HasMaxLength(9)
                 .IsUnicode(false)

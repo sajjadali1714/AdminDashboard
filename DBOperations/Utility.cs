@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AdminDashboard.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.DBOperations
@@ -39,9 +41,10 @@ namespace AdminDashboard.DBOperations
                 {
                     return (T)(object)result.FirstOrDefault()?.ToString();
                 }
-                else if (typeof(T) == typeof(int[]))
+                else if (typeof(T) == typeof(decimal[]))
                 {
-                    return (T)(object)result;
+                    var intArray = result.Cast<decimal>().ToArray();
+                    return (T)(object)intArray;
                 }
                 else if (typeof(T) == typeof(List<int>))
                 {
@@ -51,8 +54,61 @@ namespace AdminDashboard.DBOperations
                 throw new ArgumentException("Unsupported data type");
             }
         }
+
+
+        public List<T> GetList<T>(string sql, Func<SqlDataReader, T> map) where T : class, new()
+    {
+        using (var context = new ApplicationDBContext())
+        using (var command = context.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = sql;
+            context.Database.OpenConnection();
+
+            using (var result = command.ExecuteReader())
+            {
+                var entities = new List<T>();
+
+                while (result.Read())
+                {
+                    entities.Add(map((SqlDataReader)result));
+                }
+                return entities;
+            }
+        }
+    }
+
+        // public List<T> Getlist<T>(string sql) where T : class, new()
+        // {
+        //     using (var context = new ApplicationDBContext())
+        //     {
+        //         var result = context.VwSalesDetails
+        //         .FromSqlRaw(sql)
+        //         .AsEnumerable()
+        //         .Select(row => MapToType<T>(row))
+        //         .ToList();
+
+        //         return result;
+        //     }
+        // }
+
+        // private T MapToType<T>(VwSalesDetail row) where T : class, new()
+        // {
+        //     // Create an instance of the desired type
+        //     var instance = new T();
+        //     var properties = typeof(T).GetProperties();
+
+        //     foreach (var property in properties)
+        //     {
+        //         var value = typeof(VwSalesDetail).GetProperty(property.Name)?.GetValue(row);
+        //         property.SetValue(instance, value);
+        //     }
+
+        //     return instance;
+        // }
+
     }
 }
+
 
 
 // // Example usage

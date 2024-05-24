@@ -2,11 +2,14 @@
   ViewData["Title"] = "Home Page";
   var result = ViewBag.SalesDetail;
 }
+@using Newtonsoft.Json
 
 <div class="pc-container">
   <div class="pc-content">
     <!-- [ Main Content ] start -->
     <div class="row">
+
+      @* Orders Received *@
       <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-primary order-card">
           <div class="card-body">
@@ -17,6 +20,8 @@
           </div>
         </div>
       </div>
+
+      @* Total Product Sales *@
       <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-success order-card">
           <div class="card-body">
@@ -27,6 +32,8 @@
           </div>
         </div>
       </div>
+      
+      @* Revenue *@
       <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-warning order-card">
           <div class="card-body">
@@ -37,25 +44,30 @@
         </div>
       </div>
 
+      @* Total Profit *@
       <div class="col-md-6 col-xl-3">
         <div class="card bg-grd-danger order-card">
           <div class="card-body">
             <h6 class="text-white">Total Profit</h6>
-            <h2 class="text-end text-white"><i class="feather icon-award float-start"></i><span>$9,562</span></h2>
-            <p class="m-b-0">This Month<span class="float-end">$542</span></p>
+            <h2 class="text-end text-white"><i class="feather icon-award float-start"></i><span>$ @result.totalProfit</span></h2>
+            <p class="m-b-0">This Month<span class="float-end">$ @result.monthProfit</span></p>
           </div>
         </div>
       </div>
+
+      @* Last Five Month Revenue 2023-2024 *@
       <div class="col-md-6 col-xl-7">
         <div class="card">
           <div class="card-header">
-            <h5>Last Six Month Revenue 2023-2024</h5>
+            <h5>Last Five Month Revenue 2023-2024</h5>
           </div>
           <div class="card-body">
-            <canvas id="myChart"></canvas>
+            <canvas id="FiveMonthRevenueChart"></canvas>
           </div>
         </div>
       </div>
+
+      @* Branch Sales Summary *@
       <div class="col-md-6 col-xl-5">
         <div class="card">
           <div class="card-header d-flex align-items-center justify-content-between py-3">
@@ -70,17 +82,9 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="media align-items-center">
-
-              @* <div class="avtar avtar-s bg-light-primary flex-shrink-0">
-              <i class="ph ph-money f-20"></i>
-              </div>
-              <div class="media-body ms-3">
-              <p class="mb-0 text-muted">Total Earnings</p>
-              <h5 class="mb-0">$249.95</h5>
-              </div> *@
+            <div class="media align-items-center">              
             </div>
-            <canvas id="myChart1" height="265px"></canvas>
+            <canvas id="BranchSalesSummary" height="265px"></canvas>
           </div>
         </div>
         @* <div class="card">
@@ -112,7 +116,8 @@
         </div>
         </div> *@
       </div>
-
+      
+      @* Daily Sales *@
       <div class="col-md-4 col-sm-6">
         <div class="card statistics-card-1">
           <div class="card-body">
@@ -130,7 +135,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center mt-3">
-              <h3 class="f-w-300 d-flex align-items-center m-b-0">$249.95</h3>
+              <h3 class="f-w-300 d-flex align-items-center m-b-0">$ @result.dailySales</h3>
               @* <span class="badge bg-light-success ms-2">36%</span> *@
             </div>
             <p class="text-muted mb-2 text-sm mt-3">Daily Sales Details With Branchs</p>
@@ -141,6 +146,8 @@
           </div>
         </div>
       </div>
+
+      @* Monthly Sales *@
       <div class="col-md-4 col-sm-6">
         <div class="card statistics-card-1">
           <div class="card-body">
@@ -158,7 +165,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center mt-3">
-              <h3 class="f-w-300 d-flex align-items-center m-b-0">$249.95</h3>
+              <h3 class="f-w-300 d-flex align-items-center m-b-0">$@result.monthSales</h3>
               @* <span class="badge bg-light-primary ms-2">20%</span> *@
             </div>
             <p class="text-muted mb-2 text-sm mt-3">Monthly Sales Details With Branchs</p>
@@ -169,6 +176,8 @@
           </div>
         </div>
       </div>
+
+      @* Yearly Sales *@
       <div class="col-md-4 col-sm-12">
         <div class="card statistics-card-1 bg-brand-color-1">
           <div class="card-body">
@@ -186,7 +195,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center mt-3">
-              <h3 class="text-white f-w-300 d-flex align-items-center m-b-0">$249.95</h3>
+              <h3 class="text-white f-w-300 d-flex align-items-center m-b-0">$@result.yearSales</h3>
             </div>
             <p class="text-white text-opacity-75 mb-2 text-sm mt-3">Yearly Sales Details With Branchs</p>
             <div class="progress" style="height: 7px">
@@ -196,56 +205,39 @@
           </div>
         </div>
       </div>
-      <!-- Recent Orders start -->
+      
+      @* Current Month Branch Sales Details *@
       <div class="col-sm-12">
         <div class="card table-card">
           <div class="card-header">
-            <h5>Top 5 Customers</h5>
+            <h5>Current Month Branch Sales Details</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
               <table class="table">
                 <tr>
-                  <th>Product Code</th>
-                  <th>Customer</th>
-                  <th>Purchased On</th>
-                  <th>Status</th>
-                  <th>Transaction ID</th>
+                  <th>Month</th>
+                  <th>Branch</th>
+                  <th>Total Sale</th>
+                  <th>Maximum Sale</th>
+                  <th>Minimum Sale</th>
+                  <th>Average Sale</th>
                 </tr>
-                <tr>
-                  <td>PNG002413</td>
-                  <td>Jane Elliott</td>
-                  <td>06-01-2017</td>
-                  <td><span class="badge bg-primary">Shipping</span></td>
-                  <td>#7234421</td>
-                </tr>
-                <tr>
-                  <td>PNG002344</td>
-                  <td>John Deo</td>
-                  <td>05-01-2017</td>
-                  <td><span class="badge bg-danger">Failed</span></td>
-                  <td>#7234486</td>
-                </tr>
-                <tr>
-                  <td>PNG002653</td>
-                  <td>Eugine Turner</td>
-                  <td>04-01-2017</td>
-                  <td><span class="badge bg-success">Delivered</span></td>
-                  <td>#7234417</td>
-                </tr>
-                <tr>
-                  <td>PNG002156</td>
-                  <td>Jacqueline Howell</td>
-                  <td>03-01-2017</td>
-                  <td><span class="badge bg-warning">Pending</span></td>
-                  <td>#7234454</td>
-                </tr>
+                @foreach (var data in result.BranchSales) {
+                  <tr>
+                      <td>@data.orderMonth</td>
+                      <td>@data.BranchName</td>
+                      <td>@data.totalSale</td>
+                      <td style="font-size:large;"><span class="badge bg-success">@data.maxSale</span></td>
+                      <td style="font-size:large;"><span class="badge bg-danger">@data.minSale</span></td>
+                      <td style="font-size:large;"><span class="badge bg-warning">@data.avgSale</span></td>
+                  </tr>
+                }                
               </table>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Recent Orders end -->
+      </div>      
     </div>
     <!-- [ Main Content ] end -->
   </div>
@@ -253,14 +245,14 @@
 
 
 <script>
-  window.onload = function () {
-    createMultiDataChart('myChart',
+  window.onload = function () {    
+    createMultiDataChart('FiveMonthRevenueChart',
       'bar',
       ['2023', '2024'],
-      ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
-      [[1200, 1900, 300, 500, 200, 300], [500, 200, 700, 1200, 1900, 300]],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      [@Html.Raw(JsonConvert.SerializeObject(@result.pastFiveMonthSales)), @Html.Raw(JsonConvert.SerializeObject(@result.FiveMonthSales))],
       true
     );
-    createChart('myChart1', 'doughnut', 'Quarterly Revenue', ['Q1', 'Q2', 'Q3'], [15000, 20000, 30000], false);
+    createChart('BranchSalesSummary', 'doughnut', 'Branch Sales Summary', ['California', 'Florida', 'Texas'], @Html.Raw(JsonConvert.SerializeObject(@result.branchSales)), false);
   };
 </script>
