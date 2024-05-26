@@ -46,6 +46,11 @@ namespace AdminDashboard.DBOperations
                     var intArray = result.Cast<decimal>().ToArray();
                     return (T)(object)intArray;
                 }
+                else if (typeof(T) == typeof(int[]))
+                {
+                    var intArray = result.Cast<int>().ToArray();
+                    return (T)(object)intArray;
+                }
                 else if (typeof(T) == typeof(List<int>))
                 {
                     return (T)(object)result.ToList();

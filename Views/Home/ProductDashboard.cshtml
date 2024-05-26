@@ -1,13 +1,196 @@
 @{
-    ViewData["Title"] = "Product Dashboard";
+  ViewData["Title"] = "Product Dashboard";
+  var result = ViewBag.ProductDetail;
 }
-
+@using Newtonsoft.Json
 <div class="pc-container">
-    <div class="pc-content">
-      <!-- [ Main Content ] start -->
-      <div class="row">
-        <h3>ProductDashboard</h3>
+  <div class="pc-content">
+    
+    @* Date Range *@
+    <div class="col-md-6 col-xl-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-primary me-2">Current Year</button>
+            <button type="button" class="btn btn-primary me-2">6 Months</button>
+            <button type="button" class="btn btn-primary me-2">Current Month</button>
+            <button type="button" class="btn btn-primary me-3">Date</button>
+          </div>
+          <div class="d-flex align-items-center">
+            <label for="d_week1" class="form-label me-2">Start Date:</label>
+            <input type="date" class="form-control datepicker-input in-edit me-2" id="d_week1">
+            <label for="d_week2" class="form-label me-2">End Date:</label>
+            <input type="date" class="form-control datepicker-input in-edit" id="d_week2">
+          </div>
+        </div>
       </div>
+
     </div>
+
+
+
+    <div class="row">     
+
+      @* Total revenue for each product category *@
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Total Revenue For Each Product Category</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="TotalRevenueProductCategory"></canvas>
+          </div>
+        </div>
+      </div>
+
+      @* Total orders for each product line *@
+      <div class="col-md-6 col-xl-5">
+        <div class="card">
+          <div class="card-header">
+            <h5>Total Orders For Each Product Category</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="TotalOrdersProductCategory" height="265px"></canvas>
+          </div>
+        </div>
+      </div>
+      
+
+      @* Most Common Product Category By Gender *@
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Common Product Category By Gender</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"><i class="material-icons-two-tone f-18">more_vert</i></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center">
+            </div>
+            <canvas id="ProductCategoryByGender"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      @* Most Common Payment Method *@
+      <div class="col-md-6 col-xl-5">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Common Payment Method</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"><i class="material-icons-two-tone f-18">more_vert</i></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center">
+            </div>
+            <canvas id="CommonPaymentMethod" height="265px"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      @* Branch Wise product Category Revenue *@
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Branch Wise Product Category Revenue</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="BranchProductCategoryRevenue"></canvas>
+          </div>
+        </div>
+      </div>
+
+      @* Average rating of each product Category *@
+      <div class="col-md-6 col-xl-5">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Average Rating Of Each Product Category</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"><i class="material-icons-two-tone f-18">more_vert</i></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center">
+            </div>
+            <canvas id="AverageRatingProductCategory" height="265px"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    <!-- [ Main Content ] end -->
+  </div>
 </div>
 
+
+
+
+
+<script>
+  window.onload = function () {
+    
+    createMultiDataChart('TotalRevenueProductCategory','bar',['2023', '2024'],
+                        ['Electronic', 'Fashion', 'Food','Health', 'Home', 'Sports'],
+                        [
+                          @Html.Raw(JsonConvert.SerializeObject(@result.PastTotalRevenueProductCategory)), 
+                          @Html.Raw(JsonConvert.SerializeObject(@result.TotalRevenueProductCategory))
+                        ]
+                        ,true);
+    createChart('TotalOrdersProductCategory', 'doughnut', 'Total Orders', 
+                ['Electronic', 'Fashion', 'Food','Health', 'Home', 'Sports'], 
+                @Html.Raw(JsonConvert.SerializeObject(@result.TotalOrdersProductCategory)), 
+                false);
+    createMultiDataChart('ProductCategoryByGender','bar',['Male', 'Female'],
+                        ['Electronic', 'Fashion', 'Food','Health', 'Home', 'Sports'],
+                        [
+                          @Html.Raw(JsonConvert.SerializeObject(@result.ProductCategoryByMale)), 
+                          @Html.Raw(JsonConvert.SerializeObject(@result.ProductCategoryByFemale))
+                        ]
+                        ,true);
+    createChart('CommonPaymentMethod', 'pie', 'Common Payment Method', ['Cash', 'Credit card', 'Ewallet'], @Html.Raw(JsonConvert.SerializeObject(@result.CommonPaymentMethod)) , false);
+    createMultiDataChart('BranchProductCategoryRevenue', 'bar', ['California','Florida','Texas'], 
+                ['Electronic', 'Fashion', 'Food','Health', 'Home', 'Sports'], 
+                [
+                  @Html.Raw(JsonConvert.SerializeObject(@result.CaliforniaBranchProductCategoryRevenue)),
+                  @Html.Raw(JsonConvert.SerializeObject(@result.FloridaBranchProductCategoryRevenue)),
+                  @Html.Raw(JsonConvert.SerializeObject(@result.TexasBranchProductCategoryRevenue))
+                ], 
+                 true);
+    
+    createChart('AverageRatingProductCategory', 'doughnut', 'Average Rating', 
+                ['Electronic', 'Fashion', 'Food','Health', 'Home', 'Sports'], 
+                @Html.Raw(JsonConvert.SerializeObject(@result.AverageRatingProductCategory)) 
+                , false);
+    
+  };
+</script>
+
+
+@* 
+Suitable Chart Types for Each Requirement
+
+Unique product lines: Bar Chart
+Most common payment method: Pie Chart / Bar Chart
+Most selling product line: Bar Chart
+Most common product line by gender: Stacked Bar Chart / Grouped Bar Chart
+Average rating of each product line: Bar Chart / Radar Chart 
+product line had the largest revenue Bar Chart*@

@@ -47,7 +47,7 @@ public partial class VwSalesDetail
 
     public decimal? GrossIncome { get; set; }
 
-    public string? Rating { get; set; }
+    public decimal? Rating { get; set; }
 
     public string TimeOfDay { get; set; } = null!;
 
