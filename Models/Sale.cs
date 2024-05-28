@@ -9,6 +9,8 @@ public partial class Sale
 
     public string InvoiceNo { get; set; } = null!;
 
+    public int? TotalSalesAmount { get; set; } = null!;
+
     public int? BranchId { get; set; }
 
     public int? CustomerId { get; set; }

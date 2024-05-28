@@ -55,6 +55,37 @@ namespace AdminDashboard.DBOperations
             }
         }
 
+        public T GetDataFromDB<T>(string sql, params SqlParameter[] parameters) where T : class, new()
+    {
+        using (var context = new ApplicationDBContext())
+        using (var command = context.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = sql;
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+            context.Database.OpenConnection();
+
+            using (var result = command.ExecuteReader())
+            {
+                if (result.Read())
+                {
+                    var entity = new T();
+                    foreach (var prop in typeof(T).GetProperties())
+                    {
+                        if (!Equals(result[prop.Name], DBNull.Value))
+                        {
+                            prop.SetValue(entity, result[prop.Name], null);
+                        }
+                    }
+                    return entity;
+                }
+                return null;
+            }
+        }
+    }
+
 
         public List<T> GetList<T>(string sql, Func<SqlDataReader, T> map) where T : class, new()
     {
@@ -76,6 +107,27 @@ namespace AdminDashboard.DBOperations
             }
         }
     }
+
+
+    public T GetScalarValueFromDB<T>(string sql, params SqlParameter[] parameters)
+{
+    using (var context = new ApplicationDBContext())
+    using (var command = context.Database.GetDbConnection().CreateCommand())
+    {
+        command.CommandText = sql;
+        command.Parameters.AddRange(parameters);
+        context.Database.OpenConnection();
+
+        var result = command.ExecuteScalar();
+        if (result == null || result == DBNull.Value)
+            return default;
+
+        return (T)Convert.ChangeType(result, typeof(T));
+    }
+}
+
+
+
 
         // public List<T> Getlist<T>(string sql) where T : class, new()
         // {
@@ -107,6 +159,8 @@ namespace AdminDashboard.DBOperations
         // }
 
     }
+
+    
 }
 
 

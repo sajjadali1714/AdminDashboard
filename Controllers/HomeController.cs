@@ -70,6 +70,44 @@ public class HomeController : Controller
 
     public IActionResult CustomerDashboard()
     {
+        Customer_Query customer = new Customer_Query();
+
+        var Max = customer.GetQtyDetail("quantity", "Max");
+        var Min = customer.GetQtyDetail("quantity", "Min");
+        var Male = customer.GetCustomerTypes("gender", "Male");
+        var Female = customer.GetCustomerTypes("gender", "Female");
+        var totalCustomers = customer.GetCustomerCount("Email");
+        var CustomerTypeName = customer.GetCustomerCount("CustomerTypeName");
+        var Normal = customer.GetSumOfSale("TotalSalesAmount", "Normal");
+        var Member = customer.GetSumOfSale("TotalSalesAmount", "Member");
+        var MaxTax = customer.GetTax("Tax", "Max");
+        var MinTax = customer.GetTax("Tax", "Min");
+        var MaxTaxPaidUser = customer.GetCustomerNameWithMaxTax();
+        var MinTaxPaidUser = customer.GetCustomerNameWithMinTax();
+        var TotalTax = customer.GetSumOfTax("Tax");
+        var topCustomers = customer.GetTop5CustomersByPurchase();
+
+        // Tax Paid User Wise Dict
+        var tax = new Dictionary<string, (string name, int Tax, string Title, string bg_color, string front_color)>
+        {
+            {"Max",(MaxTaxPaidUser, (int)MaxTax, "Max Tax Paid", "card statistics-card-1", "")},
+            {"Min",(MinTaxPaidUser, (int)MinTax, "Min Tax Paid", "card statistics-card-1","")},
+            {"Total",("All Customers", (int)TotalTax, "Total Tax Paid", "card statistics-card-1 bg-brand-color-1","text-white")},
+        } ;
+
+        // Top Boxes Dict
+        var orderBoxes = new Dictionary<string, (string Icon, int Count, string Description, int DescriptionCount, string bg_color)>
+        {
+            { "Total Customers", ("users",(int)totalCustomers, "Unique Types", (int)CustomerTypeName, "card bg-grd-success order-card") },
+            { "Male Purchasing",  ("users",   (int)Male, "Female Purchasing", (int)Female,  "card bg-grd-warning order-card") },
+            { "Normal Type", ("dollar-sign", (int)Normal, "Member Type", (int)Member, "card bg-grd-primary order-card") },
+            { "Max Qty Purchase",("shopping-bag",  (int)Max, "Min Qty Purchase", (int)Min, "card bg-grd-danger order-card") },
+            
+        };
+
+        ViewData["TopCustomers"] = topCustomers;
+        ViewData["OrderBoxes"] = orderBoxes;
+        ViewData["Tax"] = tax;
         return View();
     }
 
