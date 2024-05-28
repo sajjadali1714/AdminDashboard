@@ -12,6 +12,12 @@
   int memberCustomers = orderBoxes["Normal Type"].DescriptionCount;
   int MaleCustomers = orderBoxes["Male Purchasing"].Count;
   int FemaleCustomers = orderBoxes["Male Purchasing"].DescriptionCount;
+
+  <!--Bar Chart -->
+  var salesData = ViewData["MostPurchase"] as Dictionary<string, decimal[]>;
+  var maleSales = salesData != null && salesData.ContainsKey("MaleSales") ? salesData["MaleSales"] : new decimal[0];
+  var femaleSales = salesData != null && salesData.ContainsKey("FemaleSales") ? salesData["FemaleSales"] : new decimal[0];
+}
 }
 
 <div class="pc-container">
@@ -74,111 +80,103 @@
         }
       }
 
-      <!-- Donut Charts -->
-        <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-xl-5 mb-4">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5>Purchasing Customer Gender Wise</h5>
-                    <div class="dropdown">
-                        <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons-two-tone f-18">more_vert</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View</a>
-                            <a class="dropdown-item" href="#">Edit</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="media align-items-center"></div>
-                    <canvas id="myChart1" height="265" width="350"></canvas>
-                </div>
-            </div>
+      <!-- Charts -->
+      @* Last Five Month Male-Female Purchase 2023-2024 *@
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Last Five Month Purchasing Gender Wise</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="myChart"></canvas>
+          </div>
         </div>
+      </div>
 
-        <div class="col-md-6 col-xl-5 mb-4">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5>Purchasing Customer Types Wise</h5>
-                    <div class="dropdown">
-                        <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons-two-tone f-18">more_vert</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="#">View</a>
-                            <a class="dropdown-item" href="#">Edit</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="media align-items-center"></div>
-                    <canvas id="myChart2" height="265" width="350"></canvas>
-                </div>
+      <div class="col-md-6 col-xl-5 mb-4">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Purchasing Customer Types Wise</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons-two-tone f-18">more_vert</i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
             </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center"></div>
+            <canvas id="myChart2" height="245"></canvas>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
-      <!-- Top Customers start -->
-      <div class="col-sm-12">
-    <div class="card table-card">
-        <div class="card-header">
-            <h5>Top 5 Customers</h5>
-        </div>
-        @if (topCustomers != null && topCustomers.Any())
-        {
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Purchase</th>
-                            <th>Product Name</th>
-                            <th>Product Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (var i = 0; i < topCustomers.Count; i++)
-                        {
-                            var customer = topCustomers[i];
-                        <tr>
-                            <td>@(i + 1)</td>
-                            <td>@customer.FirstName</td>
-                            <td>@customer.LastName</td>
-                            <td style="font-size:large;"><span class="badge bg-success">@customer.price</span></td>
-                            <td style="font-size:large;"><span class="badge bg-danger">@customer.ProductName</span></td>
-                            <td style="font-size:large;"><span class="badge bg-warning">@customer.ProductCategoryName</span></td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        }
-    </div>
-</div>
-      <!-- Top Customers end -->
-    </div>
-    <!-- [ Main Content ] end -->
   </div>
+
+  <!-- Top Customers start -->
+  <div class="col-sm-12">
+    <div class="card table-card">
+      <div class="card-header">
+        <h5>Top 5 Customers</h5>
+      </div>
+      @if (topCustomers != null && topCustomers.Any())
+      {
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Purchase</th>
+                  <th>Product Name</th>
+                  <th>Product Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (var i = 0; i < topCustomers.Count; i++)
+                {
+                  var customer = topCustomers[i];
+                  <tr>
+                    <td>@(i + 1)</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td style="font-size:large;"><span class="badge bg-success">@customer.price</span></td>
+                    <td style="font-size:large;"><span class="badge bg-danger">@customer.ProductName</span></td>
+                    <td style="font-size:large;"><span class="badge bg-warning">@customer.ProductCategoryName</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  <!-- Top Customers end -->
+</div>
+<!-- [ Main Content ] end -->
+</div>
 </div>
 
 
 <script>
   window.onload = function () {
+    var maleSales = @Html.Raw(Json.Serialize(maleSales));
+    var femaleSales = @Html.Raw(Json.Serialize(femaleSales));
+
     createMultiDataChart('myChart',
       'bar',
-      ['2023', '2024'],
-      ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
-      [[1200, 1900, 300, 500, 200, 300], [500, 200, 700, 1200, 1900, 300]],
+      ['Male', 'Female'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      [maleSales, femaleSales],
       true
     );
-    createChart('myChart1', 'doughnut', 'Customer Purchasing', ['Male', 'Female'], [@MaleCustomers, @FemaleCustomers], false);
     createChart('myChart2', 'pie', 'Customer Purchasing', ['Normal', 'Member'], [@normalCustomers, @memberCustomers], false);
   };
 </script>

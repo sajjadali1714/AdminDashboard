@@ -134,6 +134,7 @@ namespace AdminDashboard.DBOperations
 
 
 
+
         // public List<T> Getlist<T>(string sql) where T : class, new()
         // {
         //     using (var context = new ApplicationDBContext())

@@ -123,7 +123,21 @@ public class HomeController : Controller
         var MaxTaxPaidUser = customer.GetCustomerNameWithMaxTax();
         var MinTaxPaidUser = customer.GetCustomerNameWithMinTax();
         var TotalTax = customer.GetSumOfTax("Tax");
-        var topCustomers = customer.GetTop5CustomersByPurchase();
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
+
+        // Bar Chart
+        string fromDate = DateTime.Now.AddMonths(-5).ToString("yyyy-MM-01");
+        string toDate = DateTime.Now.ToString("yyyy-MM-dd");
+        int year = DateTime.Now.Year;
+
+        var (maleSales, femaleSales) = customer.GetFiveMonthSalesByGender("TotalSalesAmount", fromDate, toDate, year);
+        // Bar chart Data Dict
+        var salesData = new Dictionary<string, decimal[]>
+        {
+            { "MaleSales", maleSales },
+            { "FemaleSales", femaleSales }
+        };
+
 
         // Tax Paid User Wise Dict
         var tax = new Dictionary<string, (string name, int Tax, string Title, string bg_color, string front_color)>
@@ -146,11 +160,26 @@ public class HomeController : Controller
         ViewData["TopCustomers"] = topCustomers;
         ViewData["OrderBoxes"] = orderBoxes;
         ViewData["Tax"] = tax;
+        ViewData["MostPurchase"] = salesData;
         return View();
     }
 
     public IActionResult CustomerDetail()
     {
+        Customer_Query customer = new Customer_Query();
+
+        var leastCustomers = customer.GetTop5CustomersByPurchaseASC();
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
+        var CustomerDetails = customer.GetCustomersDetails();
+
+        var dataDict = new Dictionary<string, (string title, List<CustomerBase> data)>()
+        {
+            { "LeastCustomers", ("Top 5 Customers with Least Purchasing", leastCustomers.Cast<CustomerBase>().ToList()) },
+            { "TopCustomers", ("Top 5 Customers With Highest Purchasing", topCustomers.Cast<CustomerBase>().ToList()) },
+            { "CustomerDetails", ("Customer Details", CustomerDetails.Cast<CustomerBase>().ToList()) },
+        };
+
+        ViewData["Customers"] = dataDict;
         return View();
     }
 
