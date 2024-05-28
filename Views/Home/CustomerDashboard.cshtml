@@ -1,12 +1,184 @@
+@using AdminDashboard.Models.ViewModel
 @{
-    ViewData["Title"] = "Customer Dashboard";
+  ViewData["Title"] = "Customer Dashboard";
+  var topCustomers = ViewData["TopCustomers"] as List<CustomerPurchase>;
+  var tax = ViewData["tax"] as Dictionary<string, (string name, int tax, string Title, string bg_color, string
+  front_color)>;
+  var orderBoxes = ViewData["OrderBoxes"] as Dictionary<string, (string Icon, int Count, string Description, int
+  DescriptionCount, string bg_color)>;
+
+
+  int normalCustomers = orderBoxes["Normal Type"].Count;
+  int memberCustomers = orderBoxes["Normal Type"].DescriptionCount;
+  int MaleCustomers = orderBoxes["Male Purchasing"].Count;
+  int FemaleCustomers = orderBoxes["Male Purchasing"].DescriptionCount;
 }
 
 <div class="pc-container">
-    <div class="pc-content">
-      <!-- [ Main Content ] start -->
-      <div class="row">
-        <h3>CustomerDashboard</h3>
-      </div>
+  <div class="pc-content">
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      @if (orderBoxes != null)
+      {
+        foreach (var box in orderBoxes)
+        {
+          <div class="col-md-6 col-xl-3">
+            <div class="@box.Value.bg_color">
+              <div class="card-body">
+                <h6 class="text-white">@box.Key</h6>
+                <h2 class="text-end text-white"><i
+                    class="feather icon-@box.Value.Icon float-start"></i><span>@box.Value.Count</span>
+                </h2>
+                <p class="m-b-0">@box.Value.Description<span class="float-end">@box.Value.DescriptionCount</span></p>
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Tax Paid start -->
+      @if (tax != null)
+      {
+        foreach (var entry in tax)
+        {
+          <div class="col-md-4 col-sm-6">
+            <div class="@entry.Value.bg_color">
+              <div class="card-body">
+                <img src="~/GradientTemplate/assets/images/widget/img-status-4.svg" alt="img" class="img-fluid img-bg">
+                <div class="d-flex align-items-center justify-content-between mb-3 drp-div">
+                  <h6 class="@entry.Value.front_color mb-0">@entry.Value.Title</h6>
+                  <div class="dropdown">
+                    <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="material-icons-two-tone f-18">more_vert</i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="#">View</a>
+                      <a class="dropdown-item" href="#">Edit</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                  <h3 class="@entry.Value.front_color f-w-300 d-flex align-items-center m-b-0">
+                    $@entry.Value.tax.ToString("0.00")</h3>
+                  @* <span class="badge bg-light-success ms-2">36%</span> *@
+                </div>
+                <p class="@entry.Value.front_color mb-2 text-sm mt-3">Paid By @entry.Value.name</p>
+                <div class="progress" style="height: 7px">
+                  <div class="progress-bar bg-brand-color-1" role="progressbar" style="width: 75%" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Donut Charts -->
+        <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-xl-5 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5>Purchasing Customer Gender Wise</h5>
+                    <div class="dropdown">
+                        <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons-two-tone f-18">more_vert</i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">View</a>
+                            <a class="dropdown-item" href="#">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="media align-items-center"></div>
+                    <canvas id="myChart1" height="265" width="350"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-5 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5>Purchasing Customer Types Wise</h5>
+                    <div class="dropdown">
+                        <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons-two-tone f-18">more_vert</i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">View</a>
+                            <a class="dropdown-item" href="#">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="media align-items-center"></div>
+                    <canvas id="myChart2" height="265" width="350"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+      <!-- Top Customers start -->
+      <div class="col-sm-12">
+    <div class="card table-card">
+        <div class="card-header">
+            <h5>Top 5 Customers</h5>
+        </div>
+        @if (topCustomers != null && topCustomers.Any())
+        {
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Purchase</th>
+                            <th>Product Name</th>
+                            <th>Product Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < topCustomers.Count; i++)
+                        {
+                            var customer = topCustomers[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@customer.FirstName</td>
+                            <td>@customer.LastName</td>
+                            <td style="font-size:large;"><span class="badge bg-success">@customer.price</span></td>
+                            <td style="font-size:large;"><span class="badge bg-danger">@customer.ProductName</span></td>
+                            <td style="font-size:large;"><span class="badge bg-warning">@customer.ProductCategoryName</span></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+      <!-- Top Customers end -->
+    </div>
+    <!-- [ Main Content ] end -->
+  </div>
+</div>
+
+
+<script>
+  window.onload = function () {
+    createMultiDataChart('myChart',
+      'bar',
+      ['2023', '2024'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
+      [[1200, 1900, 300, 500, 200, 300], [500, 200, 700, 1200, 1900, 300]],
+      true
+    );
+    createChart('myChart1', 'doughnut', 'Customer Purchasing', ['Male', 'Female'], [@MaleCustomers, @FemaleCustomers], false);
+    createChart('myChart2', 'pie', 'Customer Purchasing', ['Normal', 'Member'], [@normalCustomers, @memberCustomers], false);
+  };
+</script>

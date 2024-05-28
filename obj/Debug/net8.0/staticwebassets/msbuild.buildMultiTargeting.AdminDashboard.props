@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\build\AdminDashboard.props" />
+  <Import Project="../build/AdminDashboard.props" />
 </Project>
