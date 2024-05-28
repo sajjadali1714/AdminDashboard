@@ -1,12 +1,75 @@
 @{
-    ViewData["Title"] = "Sales Dashboard";
+  ViewData["Title"] = "Sales Dashboard";
+  @* var Fashion = ViewData["Fashion"] as string; *@
+  var Fashion =  ViewBag.fashion;
+  var Health = ViewBag.Health;
+  var Electronic = ViewBag.Electronic;
+  var Food = ViewBag.Food;
+  var Sports = ViewBag.Sports;
+  var LifeStyle = ViewBag.LifeStyle;
 }
 
 <div class="pc-container">
-    <div class="pc-content">
-      <!-- [ Main Content ] start -->
-      <div class="row">
-       <h3>SalesDashboard</h3>
+  <div class="pc-content">
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      <h3>Sales Dashboard</h3>
+
+      <!-- [ Donut Chart ] start -->
+      <div class="col-md-6 col-xl-5 mb-4">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Sales Category Wise</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons-two-tone f-18">more_vert</i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center"></div>
+            <canvas id="myChart2" height="245"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <!-- Last Five Month Male-Female Purchase 2023-2024 -->
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Last Five Month Purchasing Gender Wise</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 </div>
+
+<script>
+  window.onload = function () {
+    // Example data
+    var maleSales = [23, 45, 67, 89, 111];
+    var femaleSales = [12, 56, 768, 34, 23];
+
+    // Create bar chart
+    createMultiDataChart('myChart',
+      'bar',
+      ['Male', 'Female'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      [maleSales, femaleSales],
+      true
+    );
+
+    // Create pie chart
+    createChart('myChart2', 'pie', 'Customer Purchasing', ['Electronic', 'Fashion', 'Food', 'Beauty', 'Lifestyle', 'Sports'], [@Electronic,@Fashion, @Food, @Health, @LifeStyle, @Sports], false);
+  };
+</script>

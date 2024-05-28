@@ -49,11 +49,27 @@ public class HomeController : Controller
 
     public IActionResult SalesDashboard()
     {
+        Sales_Query sales = new Sales_Query();
+
+        var Fashion = sales.GetTotalSalesForCategory("Fashion accessories");
+        var Health = sales.GetTotalSalesForCategory("Health and beauty");
+        var Sports = sales.GetTotalSalesForCategory("Sports and travel");
+        var Food = sales.GetTotalSalesForCategory("Food and beverages");
+        var Electronic = sales.GetTotalSalesForCategory("Electronic and accessories");
+        var LifeStyle = sales.GetTotalSalesForCategory("Food and beverages");
+
+        ViewBag.Food = Food;
+        ViewBag.Sports = Sports; 
+        ViewBag.fashion = Fashion;
+        ViewBag.Health = Health;
+        ViewBag.Electronic = Electronic;
+        ViewBag.LifeStyle = LifeStyle;
         return View();
     }
 
     public ActionResult SalesDetail()
     {
+        
         return View();
     }
 
@@ -107,7 +123,7 @@ public class HomeController : Controller
             {"Max",(MaxTaxPaidUser, (int)MaxTax, "Max Tax Paid", "card statistics-card-1", "")},
             {"Min",(MinTaxPaidUser, (int)MinTax, "Min Tax Paid", "card statistics-card-1","")},
             {"Total",("All Customers", (int)TotalTax, "Total Tax Paid", "card statistics-card-1 bg-brand-color-1","text-white")},
-        } ;
+        };
 
         // Top Boxes Dict
         var orderBoxes = new Dictionary<string, (string Icon, int Count, string Description, int DescriptionCount, string bg_color)>
@@ -116,7 +132,7 @@ public class HomeController : Controller
             { "Male Purchasing",  ("users",   (int)Male, "Female Purchasing", (int)Female,  "card bg-grd-warning order-card") },
             { "Normal Type", ("dollar-sign", (int)Normal, "Member Type", (int)Member, "card bg-grd-primary order-card") },
             { "Max Qty Purchase",("shopping-bag",  (int)Max, "Min Qty Purchase", (int)Min, "card bg-grd-danger order-card") },
-            
+
         };
 
         ViewData["TopCustomers"] = topCustomers;
