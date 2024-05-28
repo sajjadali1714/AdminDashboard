@@ -1,12 +1,91 @@
+@using AdminDashboard.Models.ViewModel
 @{
-    ViewData["Title"] = "Customer Detail";
+  ViewData["Title"] = "Customer Detail";
+  var customersDict = ViewData["Customers"] as Dictionary<string, (string title, List<CustomerBase> data)>;
 }
 
 <div class="pc-container">
-    <div class="pc-content">
-      <!-- [ Main Content ] start -->
-      <div class="row">
-        <h3>CustomerDetail</h3>
-      </div>
+  <div class="pc-content">
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      <h3>Customer Detail</h3>
+
+      @if (customersDict != null)
+      {
+        @foreach (var entry in customersDict)
+        {
+          var (title, customers) = entry.Value;
+
+          <div class="col-sm-12">
+            <div class="card table-card">
+              <div class="card-header">
+                <h5>@title</h5>
+              </div>
+              @if (customers != null && customers.Any())
+              {
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          @if (customers.First() is CustomerPurchase)
+                          {
+                            <th>Rank</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Purchase</th>
+                            <th>Product Name</th>
+                            <th>Product Category</th>
+                          }
+                          else if (customers.First() is CustomerDetails)
+                          {
+                            <th>No</th>
+                            <th>First Name</th>
+                            <th>Customer Type</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th>Total Quantity Purchased</th>
+                            <th>Top Rating</th>
+                          }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (var i = 0; i < customers.Count; i++)
+                        {
+                          var customer = customers[i];
+                          <tr>
+                            <td>@(i + 1)</td>
+                            @if (customer is CustomerPurchase purchase)
+                            {
+                              <td>@purchase.FirstName</td>
+                              <td>@purchase.LastName</td>
+                              <td style="font-size:large;"><span class="badge bg-success">@purchase.price</span></td>
+                              <td style="font-size:large;"><span class="badge bg-danger">@purchase.ProductName</span></td>
+                              <td style="font-size:large;"><span class="badge bg-warning">@purchase.ProductCategoryName</span>
+                              </td>
+                            }
+                            else if (customer is CustomerDetails details)
+                            {
+                              <td>@details.FirstName</td>
+                              <td>@details.CustomerTypeName</td>
+                              <td>@details.Phone</td>
+                              <td>@details.Gender</td>
+                              <td style="font-size:large;"><span class="badge bg-success">@details.TotalQuantityPurchased</span>
+                              </td>
+                              <td style="font-size:large;"><span class="badge bg-danger">@details.TopRating</span></td>
+                            }
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
     </div>
+    <!-- [ Main Content ] end -->
+  </div>
 </div>
