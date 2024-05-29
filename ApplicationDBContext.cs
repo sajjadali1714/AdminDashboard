@@ -146,7 +146,7 @@ public partial class ApplicationDBContext : DbContext
             entity.Property(e => e.InvoiceNo).HasMaxLength(255);
             entity.Property(e => e.MonthName)
                 .HasMaxLength(3)
-                .HasColumnName("month_name");
+                .HasColumnName("MonthName");
             entity.Property(e => e.OrderTime).HasPrecision(0);
             entity.Property(e => e.TimeOfDay)
                 .HasMaxLength(9)

@@ -25,12 +25,12 @@ namespace AdminDashboard.DBOperations
             return result;
         }
 
-        public Int64 GetMonthSalesDetail(String column, string operation, string month_name, int year)
+        public Int64 GetMonthSalesDetail(String column, string operation, string MonthName, int year)
         {
             Utility = new Utility();
             string Sql = $@" Select COALESCE({operation}({column}), 0) as {column}
                         from VW_SalesDetail 
-                        where month_name in ({month_name})
+                        where MonthName in ({MonthName})
                         and order_year = {year}";
             var result = Utility.GetDataFromDB<int>(Sql, column);
             return result;
@@ -85,11 +85,11 @@ namespace AdminDashboard.DBOperations
 
 
 
-        public List<BranchSales> GetBranchSalesDetail(string month_name, int year)
+        public List<BranchSales> GetBranchSalesDetail(string MonthName, int year)
         {
             using (var context = new ApplicationDBContext())
             {
-                string sql = $@"select CONCAT(month_name,'-',order_year) as orderMonth,
+                string sql = $@"select CONCAT(MonthName,'-',order_year) as orderMonth,
                                 BranchName,
                                 COALESCE(sum(TotalSalesAmount), 0) as totalSale,
                                 COALESCE(max(TotalSalesAmount), 0) as maxSale,
@@ -97,8 +97,8 @@ namespace AdminDashboard.DBOperations
                                 COALESCE(AVG(TotalSalesAmount), 0) as avgSale
                         from VW_SalesDetail
                         where order_year = {year}
-                        and month_name = {month_name}
-                        group by CONCAT(month_name,'-',order_year), BranchName";
+                        and MonthName = {MonthName}
+                        group by CONCAT(MonthName,'-',order_year), BranchName";
                 List<BranchSales> result = Utility.GetList<BranchSales>(sql, MapToBranchSales);
                 return result;
             }
