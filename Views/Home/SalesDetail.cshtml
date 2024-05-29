@@ -1,6 +1,7 @@
+@using AdminDashboard.Models.ViewModel
 @{
   ViewData["Title"] = "Sales Detail";
-  var result = ViewBag.SalesDetail;
+   var customersDict = ViewData["Customers"] as Dictionary<string, (string title, List<CustomerBase> data)>;
 }
 
 <div class="pc-container">
@@ -25,6 +26,63 @@
         </div>
       </div>
 
+    <!--Tables -->
+    </div>
+     <div class="row">
+      <h3>Sales Detail</h3>
+
+      @if (customersDict != null)
+      {
+        @foreach (var entry in customersDict)
+        {
+          var (title, customers) = entry.Value;
+
+          <div class="col-sm-12">
+            <div class="card table-card">
+              <div class="card-header">
+                <h5>@title</h5>
+              </div>
+              @if (customers != null && customers.Any())
+              {
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          @if (customers.First() is CustomerPurchase)
+                          {
+                            <th>No</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Sales</th>
+                            <th>Product</th>
+                          }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (var i = 0; i < customers.Count; i++)
+                        {
+                          var customer = customers[i];
+                          <tr>
+                            <td>@(i + 1)</td>
+                            @if (customer is CustomerPurchase purchase)
+                            {
+                              <td>@purchase.FirstName</td>
+                              <td>@purchase.LastName</td>
+                              <td style="font-size:large;"><span class="badge bg-success">$@purchase.price</span></td>
+                              <td style="font-size:large;"><span class="badge bg-danger">@purchase.ProductName</span></td>
+                            }
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
     </div>
   </div>
 </div>

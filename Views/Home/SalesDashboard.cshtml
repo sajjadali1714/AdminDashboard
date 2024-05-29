@@ -1,11 +1,31 @@
 @{
-    ViewData["Title"] = "Sales Dashboard";
+  ViewData["Title"] = "Sales Dashboard";
+  var paid = ViewData["paid"] as Dictionary<string, (string name, int tax, string Title, string bg_color, string
+  front_color)>;
+  var Fashion =  ViewBag.fashion;
+  var Health = ViewBag.Health;
+  var Electronic = ViewBag.Electronic;
+  var Food = ViewBag.Food;
+  var Sports = ViewBag.Sports;
+  var LifeStyle = ViewBag.LifeStyle;
+  var taxPaidMember = ViewBag.taxPaidMember;
+  var taxPaidNormal = ViewBag.taxPaidNormal;
+
+  <!-- Bar Chart Customer Types Wise Sales-->
+  var salesData = ViewData["Sales_By_Types"] as Dictionary<string, decimal[]>;
+  var normalSales = salesData != null && salesData.ContainsKey("NormalSales") ? salesData["NormalSales"] : new decimal[0];
+  var memberSales = salesData != null && salesData.ContainsKey("MemberSales") ? salesData["MemberSales"] : new decimal[0];
+
+  <!-- Bar Chart Branch Wise Sales-->
+  var branchSaleData = ViewData["Sales_By_Branch"] as Dictionary<string, decimal[]>;
+  var texasSales = branchSaleData != null && branchSaleData.ContainsKey("TexasSales") ? branchSaleData["TexasSales"] : new decimal[0];
+  var floridaSales = branchSaleData != null && branchSaleData.ContainsKey("FloridaSales") ? branchSaleData["FloridaSales"] : new decimal[0];
+  var californiaSales = branchSaleData != null && branchSaleData.ContainsKey("CaliforniaSales") ? branchSaleData["CaliforniaSales"] : new decimal[0];
 }
 
 <div class="pc-container">
-    <div class="pc-content">
-      <!-- [ Main Content ] start -->
-      @* Date Range *@
+  <div class="pc-content">
+    @* Date Range *@
     <div class="col-md-6 col-xl-12">
       <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
@@ -23,7 +43,153 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      <h3>Sales Dashboard</h3>
+
+      <!-- Charts 1-->
+      <!-- Last Five Month Male-Female Purchase 2023-2024 -->
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Last Five Month Sales Customer types Wise</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- [ Donut Chart 1 ] start -->
+      <div class="col-md-6 col-xl-5 mb-4">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Sales Category Wise</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons-two-tone f-18">more_vert</i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center"></div>
+            <canvas id="myChart2" height="245"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar chrt 2 start -->
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Most Sales Branch Wise</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="myChart1"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- [ Donut Chart 2 ] start -->
+      <div class="col-md-6 col-xl-5 mb-4">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Tax Paid Customer Type Wise</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="material-icons-two-tone f-18">more_vert</i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center"></div>
+            <canvas id="myChart3" height="245"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!--Total Sale Section -->
+    <div class="row">
+      @if (paid != null)
+      {
+        foreach (var entry in paid)
+        {
+          <div class="col-md-4 col-sm-6">
+            <div class="@entry.Value.bg_color">
+              <div class="card-body">
+                <img src="~/GradientTemplate/assets/images/widget/img-status-4.svg" alt="img" class="img-fluid img-bg">
+                <div class="d-flex align-items-center justify-content-between mb-3 drp-div">
+                  <h6 class="@entry.Value.front_color mb-0">@entry.Value.Title</h6>
+                  <div class="dropdown">
+                    <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#"
+                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="material-icons-two-tone f-18">more_vert</i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="#">View</a>
+                      <a class="dropdown-item" href="#">Edit</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                  <h3 class="@entry.Value.front_color f-w-300 d-flex align-items-center m-b-0">
+                    $@entry.Value.tax.ToString("0.00")</h3>
+                </div>
+                <p class="@entry.Value.front_color mb-2 text-sm mt-3">@entry.Value.name</p>
+                <div class="progress" style="height: 7px">
+                  <div class="progress-bar bg-brand-color-1" role="progressbar" style="width: 75%" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
     </div>
+
+  </div>
 </div>
+
+<script>
+  window.onload = function () {
+    var normalsales = @Html.Raw(Json.Serialize(normalSales));
+    var membersales = @Html.Raw(Json.Serialize(memberSales));
+     
+    createMultiDataChart('myChart',
+      'bar',
+      ['Normal Customers', 'Member Customers'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      [normalsales, membersales],
+      true
+    );
+
+    var texasSales = @Html.Raw(Json.Serialize(texasSales));
+    var floridaSales = @Html.Raw(Json.Serialize(floridaSales));
+    var californiaSales = @Html.Raw(Json.Serialize(californiaSales));
+    
+    createMultiDataChart('myChart1',
+      'bar',
+      ['Texas', 'Florida', 'California'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      [texasSales, floridaSales,californiaSales],
+      true
+    );
+
+    // Create pie chart
+    createChart('myChart2', 'pie', 'Customer Purchasing', ['Electronic', 'Fashion', 'Food', 'Beauty', 'Lifestyle', 'Sports'], [@Electronic,@Fashion, @Food, @Health, @LifeStyle, @Sports], false);
+    createChart('myChart3', 'doughnut', 'Tax Paid', ['Normal', 'Member'], [@taxPaidNormal,@taxPaidMember], false);
+  };
+</script>
