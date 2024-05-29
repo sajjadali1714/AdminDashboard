@@ -60,8 +60,43 @@ public class HomeController : Controller
         var Health = sales.GetTotalSalesForCategory("Health and beauty");
         var Sports = sales.GetTotalSalesForCategory("Sports and travel");
         var Food = sales.GetTotalSalesForCategory("Food and beverages");
-        var Electronic = sales.GetTotalSalesForCategory("Electronic and accessories");
-        var LifeStyle = sales.GetTotalSalesForCategory("Food and beverages");
+        var Electronic = sales.GetTotalSalesForCategory("Electronic accessories");
+        var LifeStyle = sales.GetTotalSalesForCategory("Home and lifestyle");
+        var taxPaidNormal = sales.GetTotalSalesForCustomer("Normal");
+        var taxPaidMember = sales.GetTotalSalesForCustomer("Member");
+        var totalSales = sales.GetTotalSales();
+        var totalSalesIn_2023 = sales.GetTotalSalesForYear(2023);
+        var totalSalesIn_2024 = sales.GetTotalSalesForYear(2024);
+
+        // BarChart
+        string fromDate = DateTime.Now.AddMonths(-5).ToString("yyyy-MM-01");
+        string toDate = DateTime.Now.ToString("yyyy-MM-dd");
+        int year = DateTime.Now.Year;
+
+        // Bar chart1 Data Dict
+        var (normalSales, memberSales) = sales.GetFiveMonthSalesByType("TotalSalesAmount", fromDate, toDate, year);
+        var salesData = new Dictionary<string, decimal[]>
+        {
+            { "NormalSales", normalSales },
+            { "MemberSales", memberSales }
+        };
+
+        // Bar Chart 2 Data Dict
+        var (texasSales, floridaSales, californiaSales) = sales.GetFiveMonthSalesByBranch("TotalSalesAmount", fromDate, toDate,year);
+        var branchSalesData = new Dictionary<string, decimal[]>
+        {
+            {"TexasSales", texasSales },
+            {"FloridaSales", floridaSales },
+            {"CaliforniaSales", californiaSales},
+        };
+
+        // Sales Paid
+         var paid = new Dictionary<string, (string name, int Tax, string Title, string bg_color, string front_color)>
+        {
+            {"2023",("Total Sale in 2023", (int)totalSalesIn_2023, "Total Sale in 2023", "card statistics-card-1", "")},
+            {"2024",("Total Sale 2024", (int)totalSalesIn_2024, "Total Sale in 2024", "card statistics-card-1","")},
+            {"Total",("Over all Sale", (int)totalSales, "Total Sale", "card statistics-card-1 bg-brand-color-1","text-white")},
+        };
 
         ViewBag.Food = Food;
         ViewBag.Sports = Sports; 
@@ -69,6 +104,12 @@ public class HomeController : Controller
         ViewBag.Health = Health;
         ViewBag.Electronic = Electronic;
         ViewBag.LifeStyle = LifeStyle;
+        ViewBag.taxPaidMember = taxPaidMember;
+        ViewBag.taxPaidNormal = taxPaidNormal;
+        ViewData["paid"] = paid;
+        // bar chart data rendered
+        ViewData["Sales_By_Types"] = salesData;
+        ViewData["Sales_By_Branch"] = branchSalesData;
         return View();
     }
 
