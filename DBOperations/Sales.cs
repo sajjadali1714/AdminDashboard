@@ -70,6 +70,20 @@ namespace AdminDashboard.DBOperations
             return result;
         }
 
+        public decimal[] GetYearMonthSales(String column,string fromDate, string toDate,int year)
+        {
+            Utility = new Utility();
+            string Sql = $@"SELECT SUM({column}) AS TotalSalesAmount 
+                            FROM VW_SalesDetail s
+                                where OrderDate  between  {fromDate} and  {toDate}
+                                and order_year = {year}
+                            GROUP BY LEFT(DATENAME(month, s.OrderDate), 3), MONTH(s.OrderDate),order_year                         
+                            ";
+            var result = Utility.GetDataFromDB<decimal[]>(Sql, column);
+            return result;
+        }
+
+
 
         public List<BranchSales> GetBranchSalesDetail(string month_name, int year)
         {

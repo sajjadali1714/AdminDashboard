@@ -20,8 +20,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        
+
         var sales = new Sales();
+        var ProductDashboard = new ProductDashboard();
         var salesViewModel = new salesViewModel()
         {
             totalOrders = sales.GetSalesDetail("id", "count"),
@@ -33,6 +34,9 @@ public class HomeController : Controller
             totalProfit = sales.GetSalesDetail("GrossIncome", "sum"),
             monthProfit = sales.GetMonthSalesDetail("GrossIncome", "sum", "'" + DateTime.Now.ToString("MMM") + "'", 2024),
 
+            YearTotalSales = sales.GetYearMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM") + "-31'", 2024),
+            pastYearTotalSales = sales.GetYearMonthSales("TotalSalesAmount", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-01-01'", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-12-31'", 2023),
+
             FiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM") + "-31'", 2024),
             pastFiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-01-01'", "'" + DateTime.Now.AddYears(-1).ToString("yyyy-MM") + "-31'", 2023),
 
@@ -41,14 +45,13 @@ public class HomeController : Controller
             dailySales = sales.GetDateWiseSalesDetail("TotalSalesAmount", "sum", "cast(getdate() as Date)", "cast(getdate() as Date)"),
             monthSales = sales.GetMonthSalesDetail("TotalSalesAmount", "sum", "'" + DateTime.Now.ToString("MMM") + "'", 2024),
             yearSales = sales.GetDateWiseSalesDetail("TotalSalesAmount", "sum", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy") + "-12-31'"),
-
+            CommonPaymentMethod = ProductDashboard.GetProductDetail("TotalSalesAmount", "sum", "2024-01-01", "2024-05-26", "", "PaymentTypeName"),
             BranchSales = sales.GetBranchSalesDetail("'" + DateTime.Now.ToString("MMM") + "'", 2024)
         };
 
         ViewBag.SalesDetail = salesViewModel;
         return View();
     }
-
     public IActionResult SalesDashboard()
     {
         Sales_Query sales = new Sales_Query();

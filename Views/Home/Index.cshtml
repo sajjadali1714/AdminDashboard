@@ -205,6 +205,40 @@
           </div>
         </div>
       </div>
+
+      @* Last Five Month Performance 2023-2024 *@
+      <div class="col-md-6 col-xl-7">
+        <div class="card">
+          <div class="card-header">
+            <h5>Last Five Month Performance 2023-2024</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="YearTotalSales"></canvas>
+          </div>
+        </div>
+      </div>
+
+       @* Most Common Payment Method *@
+      <div class="col-md-6 col-xl-5">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5>Most Common Payment Method</h5>
+            <div class="dropdown">
+              <a class="avtar avtar-xs btn-link-secondary dropdown-toggle arrow-none" href="#" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"><i class="material-icons-two-tone f-18">more_vert</i></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">View</a>
+                <a class="dropdown-item" href="#">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="media align-items-center">
+            </div>
+            <canvas id="CommonPaymentMethod" height="267px"></canvas>
+          </div>
+        </div>
+      </div>
       
       @* Current Month Branch Sales Details *@
       <div class="col-sm-12">
@@ -253,6 +287,16 @@
       [@Html.Raw(JsonConvert.SerializeObject(@result.pastFiveMonthSales)), @Html.Raw(JsonConvert.SerializeObject(@result.FiveMonthSales))],
       true
     );
+
+  createMultiDataChart('YearTotalSales',
+      'line',
+      ['2023', '2024'],
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May','June','July','Aug','Sep','Oct','Nov','Dec'],
+      [@Html.Raw(JsonConvert.SerializeObject(@result.pastYearTotalSales)), @Html.Raw(JsonConvert.SerializeObject(@result.YearTotalSales))],
+      true
+    );
     createChart('BranchSalesSummary', 'doughnut', 'Branch Sales Summary', ['California', 'Florida', 'Texas'], @Html.Raw(JsonConvert.SerializeObject(@result.branchSales)), false);
+    createChart('CommonPaymentMethod', 'pie', 'Common Payment Method', ['Cash', 'Credit card', 'Ewallet'], @Html.Raw(JsonConvert.SerializeObject(@result.CommonPaymentMethod)) , false);
+
   };
 </script>
