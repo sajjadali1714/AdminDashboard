@@ -115,7 +115,19 @@ public class HomeController : Controller
 
     public ActionResult SalesDetail()
     {
-        
+        Customer_Query customer = new Customer_Query();
+
+        var leastCustomers = customer.GetTop5CustomersByPurchaseASC();
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
+        var CustomerDetails = customer.GetCustomersDetails();
+
+        var dataDict = new Dictionary<string, (string title, List<CustomerBase> data)>()
+        {
+            { "TopCustomers", ("Highest Sales", topCustomers.Cast<CustomerBase>().ToList()) },
+            { "LeastCustomers", ("Lowest Sales", leastCustomers.Cast<CustomerBase>().ToList()) },
+        };
+
+        ViewData["Customers"] = dataDict;
         return View();
     }
 

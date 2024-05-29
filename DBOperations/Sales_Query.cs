@@ -19,12 +19,12 @@ namespace AdminDashboard.DBOperations
             Utility = new Utility();
             string sql = @"SELECT SUM(TotalSalesAmount) FROM VW_SalesDetail WHERE ProductCategoryName = @ProductCategoryName";
 
-           var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@ProductCategoryName", category));
+            var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@ProductCategoryName", category));
 
             return result;
         }
 
-         public Int64 GetTotalSales()
+        public Int64 GetTotalSales()
         {
             Utility = new Utility();
             string sql = @"SELECT SUM(TotalSalesAmount) FROM VW_SalesDetail";
@@ -34,27 +34,27 @@ namespace AdminDashboard.DBOperations
             return result;
         }
 
-      public Int64 GetTotalSalesForYear(int year)
-{
-    Utility = new Utility();
-    string sql = @"SELECT SUM(TotalSalesAmount) FROM VW_SalesDetail WHERE YEAR(order_year) = @Year";
+        public Int64 GetTotalSalesForYear(int year)
+        {
+            Utility = new Utility();
+            string sql = @"SELECT SUM(TotalSalesAmount) FROM VW_SalesDetail WHERE YEAR(order_year) = @Year";
 
-    var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@Year", year));
+            var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@Year", year));
 
-    return result;
-}
+            return result;
+        }
 
         public Int64 GetTotalSalesForCustomer(string customerType)
         {
             Utility = new Utility();
             string sql = @"SELECT SUM(Tax) FROM VW_SalesDetail WHERE CustomerTypeName = @CustomerTypeName";
 
-           var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@CustomerTypeName", customerType));
+            var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@CustomerTypeName", customerType));
 
             return result;
         }
 
-           public (decimal[] NormalSales, decimal[] MemberSales) GetFiveMonthSalesByType(string column, string fromDate, string toDate, int year)
+        public (decimal[] NormalSales, decimal[] MemberSales) GetFiveMonthSalesByType(string column, string fromDate, string toDate, int year)
         {
             Utility = new Utility();
             string normalSql = $@"
@@ -92,7 +92,7 @@ namespace AdminDashboard.DBOperations
         }
 
 
-         public (decimal[] Texas, decimal[] Florida, decimal[] California) GetFiveMonthSalesByBranch(string column, string fromDate, string toDate, int year)
+        public (decimal[] Texas, decimal[] Florida, decimal[] California) GetFiveMonthSalesByBranch(string column, string fromDate, string toDate, int year)
         {
             Utility = new Utility();
             string texasSql = $@"
@@ -123,7 +123,7 @@ namespace AdminDashboard.DBOperations
             MONTH(s.OrderDate), 
             order_year";
 
-             string californiaSql = $@"
+            string californiaSql = $@"
         SELECT 
             SUM({column}) AS TotalSalesAmount 
         FROM 
@@ -141,7 +141,7 @@ namespace AdminDashboard.DBOperations
             var floridaSales = Utility.GetDataFromDB<decimal[]>(floridaSql, column);
             var californiaSales = Utility.GetDataFromDB<decimal[]>(californiaSql, column);
 
-            return (texasSales, floridaSales,californiaSales);
+            return (texasSales, floridaSales, californiaSales);
         }
 
 
