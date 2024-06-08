@@ -34,18 +34,18 @@ public class HomeController : Controller
             totalProfit = sales.GetSalesDetail("GrossIncome", "sum"),
             monthProfit = sales.GetMonthSalesDetail("GrossIncome", "sum", "'" + DateTime.Now.ToString("MMM") + "'", 2024),
 
-            YearTotalSales = sales.GetYearMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM") + "-31'", 2024),
+            YearTotalSales = sales.GetYearMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM-dd")+ "'", 2024),
             pastYearTotalSales = sales.GetYearMonthSales("TotalSalesAmount", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-01-01'", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-12-31'", 2023),
 
-            FiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM") + "-31'", 2024),
-            pastFiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-01-01'", "'" + DateTime.Now.AddYears(-1).ToString("yyyy-MM") + "-31'", 2023),
+            FiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy-MM-dd")+ "'", 2024),
+            pastFiveMonthSales = sales.GetFiveMonthSales("TotalSalesAmount", "'" + DateTime.Now.AddYears(-1).ToString("yyyy") + "-01-01'", "'" + DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd") + "'", 2023),
 
             branchSales = sales.GetBranchSalesSummary("TotalSalesAmount"),
 
             dailySales = sales.GetDateWiseSalesDetail("TotalSalesAmount", "sum", "cast(getdate() as Date)", "cast(getdate() as Date)"),
             monthSales = sales.GetMonthSalesDetail("TotalSalesAmount", "sum", "'" + DateTime.Now.ToString("MMM") + "'", 2024),
             yearSales = sales.GetDateWiseSalesDetail("TotalSalesAmount", "sum", "'" + DateTime.Now.ToString("yyyy") + "-01-01'", "'" + DateTime.Now.ToString("yyyy") + "-12-31'"),
-            CommonPaymentMethod = ProductDashboard.GetProductDetail("TotalSalesAmount", "sum", "2024-01-01", "2024-05-26", "", "PaymentTypeName"),
+            CommonPaymentMethod = ProductDashboard.GetProductDetail("TotalSalesAmount", "sum", "2024-01-01", DateTime.Now.ToString("yyyy-MM-dd"), "", "PaymentTypeName"),
             BranchSales = sales.GetBranchSalesDetail("'" + DateTime.Now.ToString("MMM") + "'", 2024)
         };
 
@@ -155,8 +155,8 @@ public class HomeController : Controller
 
         Customer_Query customer = new Customer_Query();
 
-        var leastCustomers = customer.GetTop5CustomersByPurchaseASC(startDate,endDate);
-        var topCustomers = customer.GetTop5CustomersByPurchaseDESC(startDate,endDate);
+        var leastCustomers = customer.GetTop5CustomersByPurchaseASC();
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
         var CustomerDetails = customer.GetCustomersDetails(startDate,endDate);
 
         var dataDict = new Dictionary<string, (string title, List<CustomerBase> data)>()
@@ -287,61 +287,32 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult CustomerDashboard(string dateRange, string startDate, string endDate)
+    public IActionResult CustomerDashboard()
     {
-        if (dateRange == "Current Year")
-        {
-            // Fetch data for the current year
-            startDate = DateTime.Now.ToString("yyyy") + "-01-01";
-            endDate = DateTime.Now.ToString("yyyy-MM-dd");
-        }
-        else if (dateRange == "6 Months")
-        {
-            // Fetch data for the last 6 months
-            startDate = DateTime.Now.AddMonths(-6).ToString("yyyy-MM") + "-01";
-            endDate = DateTime.Now.ToString("yyyy-MM-dd");
-        }
-        else if (dateRange == "Current Month")
-        {
-            // Fetch data for the current month
-            startDate = DateTime.Now.ToString("yyyy-MM") + "-01";
-            endDate = DateTime.Now.ToString("yyyy-MM-dd");
-        }
-        else if (dateRange == "Date")
-        {
-            // Fetch data for the custom date range
-            if (startDate.Length > 0 && endDate.Length > 0){
-                startDate = DateTime.Parse(startDate).ToString("yyyy-MM-dd");
-                endDate = DateTime.Parse(endDate).ToString("yyyy-MM-dd");
-            }            
-        } else{
-
-            startDate = DateTime.Now.ToString("yyyy-MM") + "-01";
-            endDate = DateTime.Now.ToString("yyyy-MM-dd");
-        }
+       
         Customer_Query customer = new Customer_Query();
 
-        var Max = customer.GetQtyDetail("quantity", "Max",startDate,endDate);
-        var Min = customer.GetQtyDetail("quantity", "Min",startDate,endDate);
-        var Male = customer.GetCustomerTypes("gender", "Male",startDate,endDate);
-        var Female = customer.GetCustomerTypes("gender", "Female",startDate,endDate);
-        var totalCustomers = customer.GetCustomerCount("Email",startDate,endDate);
-        var CustomerTypeName = customer.GetCustomerCount("CustomerTypeName",startDate,endDate);
-        var Normal = customer.GetSumOfSale("TotalSalesAmount", "Normal",startDate,endDate);
-        var Member = customer.GetSumOfSale("TotalSalesAmount", "Member",startDate,endDate);
-        var MaxTax = customer.GetTax("Tax", "Max",startDate,endDate);
-        var MinTax = customer.GetTax("Tax", "Min",startDate,endDate);
-        var MaxTaxPaidUser = customer.GetCustomerNameWithMaxTax(startDate,endDate);
-        var MinTaxPaidUser = customer.GetCustomerNameWithMinTax(startDate,endDate);
-        var TotalTax = customer.GetSumOfTax("Tax",startDate,endDate);
-        var topCustomers = customer.GetTop5CustomersByPurchaseDESC(startDate,endDate);
+        var Max = customer.GetQtyDetail("quantity", "Max");
+        var Min = customer.GetQtyDetail("quantity", "Min");
+        var Male = customer.GetCustomerTypes("gender", "Male");
+        var Female = customer.GetCustomerTypes("gender", "Female");
+        var totalCustomers = customer.GetCustomerCount("Email");
+        var CustomerTypeName = customer.GetCustomerCount("CustomerTypeName");
+        var Normal = customer.GetSumOfSale("TotalSalesAmount", "Normal");
+        var Member = customer.GetSumOfSale("TotalSalesAmount", "Member");
+        var MaxTax = customer.GetTax("Tax", "Max");
+        var MinTax = customer.GetTax("Tax", "Min");
+        var MaxTaxPaidUser = customer.GetCustomerNameWithMaxTax();
+        var MinTaxPaidUser = customer.GetCustomerNameWithMinTax();
+        var TotalTax = customer.GetSumOfTax("Tax");
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
         //var MonthName = customer.GetMonthName("MonthName",startDate,endDate);
         //Bar Chart
         string fromDate = DateTime.Now.AddMonths(-5).ToString("yyyy-MM-01");
         string toDate = DateTime.Now.ToString("yyyy-MM-dd");
         int year = DateTime.Now.Year;
 
-        var (maleSales, femaleSales) = customer.GetFiveMonthSalesByGender("TotalSalesAmount", fromDate, toDate);
+        var (maleSales, femaleSales) = customer.GetFiveMonthSalesByGender("TotalSalesAmount", fromDate, toDate,year);
         // Bar chart Data Dict
         var salesData = new Dictionary<string, decimal[]>
         {
@@ -411,8 +382,8 @@ public class HomeController : Controller
         }
         Customer_Query customer = new Customer_Query();
 
-        var leastCustomers = customer.GetTop5CustomersByPurchaseASC(startDate, endDate);
-        var topCustomers = customer.GetTop5CustomersByPurchaseDESC(startDate, endDate);
+        var leastCustomers = customer.GetTop5CustomersByPurchaseASC();
+        var topCustomers = customer.GetTop5CustomersByPurchaseDESC();
         var CustomerDetails = customer.GetCustomersDetails(startDate, endDate);
 
         var dataDict = new Dictionary<string, (string title, List<CustomerBase> data)>()

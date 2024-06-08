@@ -2,9 +2,7 @@
   ViewData["Title"] = "Product Dashboard";
   var result = ViewBag.ProductDetail;
 }
-
 @using Newtonsoft.Json
-
 <div class="pc-container">
   <div class="pc-content">
     
@@ -12,7 +10,7 @@
     <div class="col-md-6 col-xl-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <form asp-action="ProductDeshboard" method="get" class="d-flex align-items-center">
+                    <form asp-action="ProductDashboard" method="get" class="d-flex align-items-center">
                         <button type="submit" name="dateRange" value="Current Year" class="btn btn-primary me-2">Current Year</button>
                         <button type="submit" name="dateRange" value="6 Months" class="btn btn-primary me-2">6 Months</button>
                         <button type="submit" name="dateRange" value="Current Month" class="btn btn-primary me-2">Current Month</button>

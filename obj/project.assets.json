@@ -7840,26 +7840,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sajjad.ali\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages": {},
+    "C:\\Users\\Sajjad Ali\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Indus\\Projects\\AdminDashboard\\AdminDashboard.csproj",
+      "projectUniqueName": "D:\\Indus Uni Projects\\AdminDashboard\\AdminDashboard.csproj",
       "projectName": "AdminDashboard",
-      "projectPath": "D:\\Indus\\Projects\\AdminDashboard\\AdminDashboard.csproj",
-      "packagesPath": "C:\\Users\\sajjad.ali\\.nuget\\packages\\",
-      "outputPath": "D:\\Indus\\Projects\\AdminDashboard\\obj\\",
+      "projectPath": "D:\\Indus Uni Projects\\AdminDashboard\\AdminDashboard.csproj",
+      "packagesPath": "C:\\Users\\Sajjad Ali\\.nuget\\packages\\",
+      "outputPath": "D:\\Indus Uni Projects\\AdminDashboard\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sajjad.ali\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 21.2.config",
+        "C:\\Users\\Sajjad Ali\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7867,10 +7864,8 @@
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 21.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "C:\\Users\\sajjad.ali\\Downloads": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

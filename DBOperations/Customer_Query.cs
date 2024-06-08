@@ -14,101 +14,86 @@ namespace AdminDashboard.DBOperations
     {
         Utility Utility = null;
 
-        public Int64 GetQtyDetail(String column, String operation, string fromDate, string toDate)
+        public Int64 GetQtyDetail(String column, String operation)
         {
             Utility = new Utility();
             string Sql = $@" Select {operation}({column}) as {column}
-                        from VW_SalesDetail 
-                        WHERE 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+                        from VW_SalesDetail ";
             var result = Utility.GetDataFromDB<Int64>(Sql, column);
 
             return result;
         }
 
 
-        public Int64 GetCustomerTypes(string column, string gender, string fromDate, string toDate)
+        public Int64 GetCustomerTypes(string column, string gender)
         {
             Utility = new Utility();
-            string sql = $@"SELECT COUNT(*) FROM VW_SalesDetail WHERE {column} = @Gender
-            and 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+            string sql = $@"SELECT COUNT(*) FROM VW_SalesDetail WHERE {column} = @Gender ";
             var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@Gender", gender));
             return result;
         }
 
-        public Int64 GetCustomerCount(string column, string fromDate, string toDate)
+        public Int64 GetCustomerCount(string column)
         {
             Utility = new Utility();
-            string sql = $@"SELECT COUNT(DISTINCT {column}) FROM VW_SalesDetail
-            WHERE 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+            string sql = $@"SELECT COUNT(DISTINCT {column}) FROM VW_SalesDetail ";
             var result = Utility.GetScalarValueFromDB<Int64>(sql);
             return result;
         }
 
-        public Int64 GetSumOfSale(string column, string type, string fromDate, string toDate)
+        public Int64 GetSumOfSale(string column, string type)
         {
             Utility = new Utility();
             string sql = $@"SELECT SUM({column}) FROM VW_SalesDetail WHERE CustomerTypeName = @CustomerType
-            and 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+             ";
             var result = Utility.GetScalarValueFromDB<Int64>(sql, new SqlParameter("@CustomerType", type));
             return result;
         }
 
-        public Int64 GetTax(String column, String operation, string fromDate, string toDate)
+        public Int64 GetTax(String column, String operation)
         {
             Utility = new Utility();
             string Sql = $@" Select {operation}({column}) as {column}
-                        from VW_SalesDetail 
-                        WHERE 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+                        from VW_SalesDetail  ";
             var result = Utility.GetDataFromDB<Int64>(Sql, column);
 
             return result;
         }
 
-        public string GetCustomerNameWithMaxTax(string fromDate, string toDate)
+        public string GetCustomerNameWithMaxTax()
         {
             Utility = new Utility();
             string sql = @$"
         SELECT TOP 1 FirstName
         FROM VW_SalesDetail
-        WHERE Tax = (SELECT Max(Tax) FROM VW_SalesDetail) 
-        and 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+        WHERE Tax = (SELECT Max(Tax) FROM VW_SalesDetail)  ";
 
             return Utility.GetDataFromDB<string>(sql, "FirstName");
         }
 
 
-        public string GetCustomerNameWithMinTax(string fromDate, string toDate)
+        public string GetCustomerNameWithMinTax()
         {
             Utility = new Utility();
             string sql = @$"
         SELECT TOP 1 FirstName
         FROM VW_SalesDetail
-        WHERE Tax = (SELECT Min(Tax) FROM VW_SalesDetail)
-        and
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+        WHERE Tax = (SELECT Min(Tax) FROM VW_SalesDetail) ";
 
             return Utility.GetDataFromDB<string>(sql, "FirstName");
         }
 
-        public Int64 GetSumOfTax(string column, string fromDate, string toDate)
+        public Int64 GetSumOfTax(string column)
         {
             Utility = new Utility();
             string Sql = @$" Select Sum({column}) as {column}
-                        from VW_SalesDetail 
-                        WHERE 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}' ";
+                        from VW_SalesDetail  ";
             var result = Utility.GetDataFromDB<Int64>(Sql, column);
 
             return result;
         }
 
-        public List<CustomerPurchase> GetTop5CustomersByPurchaseDESC(string fromDate, string toDate)
+        public List<CustomerPurchase> GetTop5CustomersByPurchaseDESC()
         {
             Utility = new Utility();
             using (var context = new ApplicationDBContext())
@@ -121,9 +106,7 @@ namespace AdminDashboard.DBOperations
                 SUM(TotalSalesAmount) AS TotalPrice,
                 ProductName,
                 ProductCategoryName
-            FROM VW_SalesDetail
-            WHERE 
-            OrderDate BETWEEN '{fromDate}' AND '{toDate}'
+            FROM VW_SalesDetail 
             GROUP BY FirstName, LastName, Email, ProductName, ProductCategoryName
             ORDER BY SUM(TotalSalesAmount) DESC ";
 
@@ -131,7 +114,7 @@ namespace AdminDashboard.DBOperations
             }
         }
 
-        public List<CustomerPurchase> GetTop5CustomersByPurchaseASC(string fromDate, string toDate)
+        public List<CustomerPurchase> GetTop5CustomersByPurchaseASC()
         {
             Utility = new Utility();
             using (var context = new ApplicationDBContext())
@@ -145,7 +128,6 @@ namespace AdminDashboard.DBOperations
                 ProductName,
                 ProductCategoryName
             FROM VW_SalesDetail
-            where  OrderDate BETWEEN '{fromDate}' AND '{toDate}'
             GROUP BY FirstName, LastName, Email, ProductName, ProductCategoryName
             ORDER BY SUM(TotalSalesAmount) ASC";
 
@@ -221,7 +203,7 @@ namespace AdminDashboard.DBOperations
         }
 
 
-        public (decimal[] MaleSales, decimal[] FemaleSales) GetFiveMonthSalesByGender(string column, string fromDate, string toDate)
+        public (decimal[] MaleSales, decimal[] FemaleSales) GetFiveMonthSalesByGender(string column, string fromDate, string toDate,int year)
         {
             Utility = new Utility();
             string maleSql = $@"
@@ -232,6 +214,7 @@ namespace AdminDashboard.DBOperations
         WHERE 
             OrderDate BETWEEN '{fromDate}' AND '{toDate}' 
             AND Gender = 'Male'
+            and order_year = {year}
         GROUP BY 
             LEFT(DATENAME(month, s.OrderDate), 3), 
             MONTH(s.OrderDate), 
@@ -244,7 +227,8 @@ namespace AdminDashboard.DBOperations
             VW_SalesDetail s
         WHERE 
             OrderDate BETWEEN '{fromDate}' AND '{toDate}'
-            AND Gender = 'Female'
+            AND Gender = 'Female'            
+            and order_year = {year}
         GROUP BY 
             LEFT(DATENAME(month, s.OrderDate), 3), 
             MONTH(s.OrderDate), 
